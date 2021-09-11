@@ -1,0 +1,174 @@
+@import url("https://fonts.googleapis.com/css2?family=Varela+Round&display=swap");
+
+:root{
+    font-family: "Varela Round", sans-serif;
+    -ms-overflow-style: none; /* for Internet Explorer, Edge */
+    scrollbar-width: none; /* for Firefox */
+    overflow-y: scroll; 
+    background-color: #EEE9E3;
+}
+:root::-webkit-scrollbar{
+    display: none;
+}
+h1{
+    position: relative;
+    top: 20vh;
+    color: black;
+    text-align: center;
+    letter-spacing: 15px;
+    font-size: 6rem;
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    
+}
+
+#container{
+    position: relative;
+    top: 30vh;
+    height: 30vh;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+
+    
+}
+.option{
+    width: 500px;
+    height: 100px;
+    font-family: "Varela Round", sans-serif;
+    border-radius: 15px;
+    border: none;
+    display: block;
+    padding-top: 2vh;
+    padding-bottom: 2vh;
+    font-size: xx-large;
+    font-weight: bold;
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+
+}
+#computer{
+    background-color: #E44942;
+}
+#duo{
+    background-color: #4268E4;
+}
+.chip{
+    border:none;
+    position: fixed;
+    left: 25vw;
+    width: 50vw;
+    height: 50vw;
+    border-radius: 50vw;
+}
+#player-one{
+    top: -42vw;
+    background-color: red;
+    border: 5px solid #C90A0A;
+}
+#player-two{
+    bottom: -42vw;
+    background-color: yellow;
+    border: 5px solid #DBC900;
+}
+#piece{
+    top:-10vh;
+    border: none;
+    position: absolute;
+    width: 60px;
+    height: 60px;
+    border: 3px solid #C90A0A;
+    border-radius: 30px;
+    background-color: red;
+    
+}
+.drop{
+    display: inline;
+    animation-name: down;
+    animation-duration: 1.52s;
+    animation-timing-function: ease-in;
+
+    
+}
+.upper{
+    top: -10vh;
+    border: none;
+    position: absolute;
+    width: 60px;
+    height: 60px;
+    border: 3px solid #C90A0A;
+    border-radius: 30px;
+    background-color: red;
+}
+@media only screen and (max-width: 1400px) {
+    .option{
+        width: 400px;
+    }
+}
+@media only screen and (max-width: 1000px) {
+    h1{
+        letter-spacing: 2.617vw;
+        font-size: 3rem;
+    }
+    #container{
+        top: 30vh;
+        left: 25%;
+        width: 50%;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+    .option{
+        width: auto;
+        height: auto;
+        font-size: large;
+    }
+    .chip{
+        position: fixed;
+        left: 10vw;
+        width: 80vw;
+        height: 80vw;
+        border-radius: 50vw;
+    }
+    #player-one{
+        top: -65vw;
+        background-color: red;
+    }
+    #player-two{
+        bottom: -65vw;
+        background-color: yellow;
+    }
+}
+@media only screen and (max-width: 500px) {
+    .chip{
+        position: fixed;
+        left: 0vw;
+        width: 100vw;
+        height: 100vw;
+        border-radius: 50vw;
+    }
+    #player-one{
+        top: -75vw;
+        background-color: red;
+    }
+    #player-two{
+        bottom: -75vw;
+        background-color: yellow;
+    }
+    
+}
+@keyframes down {
+    0%{
+        display: inline;
+        top: -10vh;
+    }
+    100%{
+        top: 100vh;
+        display: none;
+    }
+}
