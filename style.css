@@ -2,13 +2,21 @@
 
 :root {
   font-family: "Varela Round", sans-serif;
-  -ms-overflow-style: none; /* for Internet Explorer, Edge */
-  scrollbar-width: none; /* for Firefox */
+  -ms-overflow-style: none; 
+  scrollbar-width: none; 
   overflow-y: scroll;
   background-color: #eee9e3;
 }
 :root::-webkit-scrollbar {
   display: none;
+}
+.fade{
+  z-index: 1;
+  background-color: rgb(5, 4, 48, .5);
+}
+.shade{
+  z-index: 1;
+  background:rgba(0,0,0,.5);
 }
 h1 {
   position: relative;
@@ -57,12 +65,16 @@ h1 {
   transform: scale(0.9);
 }
 
+#link{
+  text-decoration: none;
+}
 #duo {
   background-color: #4268e4;
   transition: transform 0.5s;
 }
 #duo:hover {
   transform: scale(0.9);
+  
 }
 .chip {
   border: none;
@@ -106,17 +118,20 @@ h1 {
 
 #pop-up-container{
   position: absolute;
-  left: 25%;
-  width: 50%;
-  height: 80%;
+  left: 0px;
+  top: 0px;
+  width: 100vw;
+  height: 100vh;
   display: flex;
   flex-direction: column;
-  justify-content: space-evenly;
   align-items: center;
+  justify-content: space-evenly;
+  z-index: 1;
 }
 
 .pop-up {
-  width: 80%;
+  z-index: 1;
+  width: 50%;
   height: 130px;
   font-family: "Varela Round", sans-serif;
   border-radius: 15px;
@@ -133,13 +148,17 @@ h1 {
   user-select: none;
   background-color: wheat;
   transform: scale(1);
+  transition: transform .5s;
 }
-
+.pop-up:hover{
+  transform: scale(.9);
+}
 .pop{
-  z-index: 1;
+  opacity: 1;
+  z-index: 2;
   animation-name: pop;
   animation-duration: .5s;
-  animation-direction: ease;
+  animation-direction: ease-out;
 }
 #hard{
   background-color: #B9180B;
@@ -150,6 +169,7 @@ h1 {
 #easy{
   background-color: #FF6B5F;
 }
+
 
 @media only screen and (max-width: 1400px) {
   .option {
@@ -169,7 +189,7 @@ h1 {
     justify-content: space-between;
   }
   .option {
-    width: auto;
+    width: 100%;
     height: auto;
     font-size: large;
   }
@@ -184,8 +204,7 @@ h1 {
     top: -65vw;
     background-color: red;
   }
-  #pop-up-container{
-    left: 10%;
+  .pop-up{
     width: 80%;
   }
 }
@@ -215,7 +234,7 @@ h1 {
 }
 @keyframes pop {
   0%{
-    transform: scale(.7);
+    transform: scale(.8);
   }
   100%{
     transform: scale(1);

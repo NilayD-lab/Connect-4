@@ -6,12 +6,12 @@ let mediumButton = document.getElementById('medium')
 hardButton.remove()
 easyButton.remove()
 mediumButton.remove()
+popUpContainer.remove()
 let lightMode = true;
 let isRed = true;
 let topPiece = document.getElementById('player-one')
 let computerButton = document.getElementById('computer')
-let duoButton = document.getElementById('duo')
-console.log(computerButton.offsetTop); 
+let duoButton = document.getElementById('duo') 
 let piece = document.getElementById('piece')
 piece.style.display = "none"
 let timer;
@@ -19,7 +19,17 @@ if (window.innerWidth>=1400){
     timer = setInterval(rain, 2000)
 }
 document.body.addEventListener('dblclick', event=>{
-    if (event.target!=computerButton && event.target!=duoButton && event.target!=topPiece){
+    function onlyBackground(child){
+        let arr = [computerButton, duoButton, topPiece, piece, popUpContainer, easyButton, mediumButton, hardButton, popUpContainer]
+        for (let i=0;i<arr.length;i++){
+            if (child==arr[i]){
+                return false
+            }
+        }
+        return true
+    }
+    
+    if (onlyBackground(event.target)){
         if (lightMode){
             lightMode = false;
             document.getElementById('all').style.backgroundColor= '#121212'
@@ -53,18 +63,40 @@ topPiece.addEventListener('click', ()=>{
 })
 
 computerButton.addEventListener('click', ()=>{
+    document.body.appendChild(popUpContainer)
     popUpContainer.appendChild(hardButton)
     popUpContainer.appendChild(mediumButton)
     popUpContainer.appendChild(easyButton)
     hardButton.classList.add('pop')
     mediumButton.classList.add('pop')
     easyButton.classList.add('pop')
-    
+    if (lightMode){
+        popUpContainer.style.backgroundColor = 'rgba(0,0,0,.5)'
+    }
+    else{
+        popUpContainer.style.backgroundColor = 'rgba(0,0,0,.5)'
+    }
+})
+
+popUpContainer.addEventListener('click', event=>{
+    if (event.target!=hardButton && event.target!=mediumButton && event.target!=easyButton){
+        hardButton.remove()
+        mediumButton.remove()
+        easyButton.remove()
+        popUpContainer.remove() 
+    }
+   
     
 
 })
-
-
+window.addEventListener('keydown', event=>{
+    if (event.key == "Escape"){
+        hardButton.remove()
+        mediumButton.remove()
+        easyButton.remove()
+        popUpContainer.remove()
+    }
+})
 
 
 
