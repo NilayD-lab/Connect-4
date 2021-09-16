@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" id="all">
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -8,15 +8,23 @@
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <h1>Connect-4</h1>
-    <button id= "piece"></button>
+    <div id="pop-up-container">
+      <button id="hard" class="pop-up">Hard</button>
+      <button id="medium" class="pop-up">Medium</button>
+      <button id="easy" class="pop-up">Easy</button>
+    </div>
+    <button id="piece"></button>
+    <h1 id="title">Connect-4</h1>
+
     <div id="container">
       <button id="computer" class="option">Computer</button>
       <button id="duo" class="option">Pass and Play</button>
     </div>
+    
   </body>
-  <button id="player-one" class = "chip"></button>
-  <div id="player-two" class = "chip"></div>
+  
+  <div id="player-one" class="chip"></div>
+  
 
-  <script src = "MainScreen.js"></script>
+  <script src="MainScreen.js"></script>
 </html>

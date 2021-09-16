@@ -1,174 +1,223 @@
 @import url("https://fonts.googleapis.com/css2?family=Varela+Round&display=swap");
 
-:root{
-    font-family: "Varela Round", sans-serif;
-    -ms-overflow-style: none; /* for Internet Explorer, Edge */
-    scrollbar-width: none; /* for Firefox */
-    overflow-y: scroll; 
-    background-color: #EEE9E3;
+:root {
+  font-family: "Varela Round", sans-serif;
+  -ms-overflow-style: none; /* for Internet Explorer, Edge */
+  scrollbar-width: none; /* for Firefox */
+  overflow-y: scroll;
+  background-color: #eee9e3;
 }
-:root::-webkit-scrollbar{
-    display: none;
+:root::-webkit-scrollbar {
+  display: none;
 }
-h1{
-    position: relative;
-    top: 20vh;
-    color: black;
-    text-align: center;
-    letter-spacing: 15px;
-    font-size: 6rem;
-    -moz-user-select: none;
-    -khtml-user-select: none;
-    -webkit-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-    
+h1 {
+  position: relative;
+  top: 20vh;
+  color: black;
+  text-align: center;
+  letter-spacing: 15px;
+  font-size: 6rem;
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+#container {
+  position: relative;
+  top: 30vh;
+  height: 30vh;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+}
+.option {
+  width: 500px;
+  height: 100px;
+  font-family: "Varela Round", sans-serif;
+  border-radius: 15px;
+  border: none;
+  display: block;
+  padding-top: 2vh;
+  padding-bottom: 2vh;
+  font-size: xx-large;
+  font-weight: bold;
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+#computer {
+  background-color: #e44942;
+  transition: transform 0.5s;
 }
 
-#container{
-    position: relative;
-    top: 30vh;
-    height: 30vh;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-evenly;
+#computer:hover {
+  transform: scale(0.9);
+}
 
-    
+#duo {
+  background-color: #4268e4;
+  transition: transform 0.5s;
 }
-.option{
-    width: 500px;
-    height: 100px;
-    font-family: "Varela Round", sans-serif;
-    border-radius: 15px;
-    border: none;
-    display: block;
-    padding-top: 2vh;
-    padding-bottom: 2vh;
-    font-size: xx-large;
-    font-weight: bold;
-    -moz-user-select: none;
-    -khtml-user-select: none;
-    -webkit-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
+#duo:hover {
+  transform: scale(0.9);
+}
+.chip {
+  border: none;
+  position: fixed;
+  left: 25vw;
+  width: 50vw;
+  height: 50vw;
+  border-radius: 50vw;
+}
+#player-one {
+  top: -42vw;
+  background-color: red;
+  border: 5px solid #c90a0a;
+}
+#piece {
+  top: -10vh;
+  border: none;
+  position: absolute;
+  width: 60px;
+  height: 60px;
+  border: 3px solid #c90a0a;
+  border-radius: 30px;
+  background-color: red;
+}
+.drop {
+  display: inline;
+  animation-name: down;
+  animation-duration: 1.52s;
+  animation-timing-function: ease-in;
+}
+.upper {
+  top: -10vh;
+  border: none;
+  position: absolute;
+  width: 60px;
+  height: 60px;
+  border: 3px solid #c90a0a;
+  border-radius: 30px;
+  background-color: red;
+}
 
+#pop-up-container{
+  position: absolute;
+  left: 25%;
+  width: 50%;
+  height: 80%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
 }
-#computer{
-    background-color: #E44942;
-}
-#duo{
-    background-color: #4268E4;
-}
-.chip{
-    border:none;
-    position: fixed;
-    left: 25vw;
-    width: 50vw;
-    height: 50vw;
-    border-radius: 50vw;
-}
-#player-one{
-    top: -42vw;
-    background-color: red;
-    border: 5px solid #C90A0A;
-}
-#player-two{
-    bottom: -42vw;
-    background-color: yellow;
-    border: 5px solid #DBC900;
-}
-#piece{
-    top:-10vh;
-    border: none;
-    position: absolute;
-    width: 60px;
-    height: 60px;
-    border: 3px solid #C90A0A;
-    border-radius: 30px;
-    background-color: red;
-    
-}
-.drop{
-    display: inline;
-    animation-name: down;
-    animation-duration: 1.52s;
-    animation-timing-function: ease-in;
 
-    
+.pop-up {
+  width: 80%;
+  height: 130px;
+  font-family: "Varela Round", sans-serif;
+  border-radius: 15px;
+  border: none;
+  display: block;
+  padding-top: 2vh;
+  padding-bottom: 2vh;
+  font-size: xx-large;
+  font-weight: bold;
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  background-color: wheat;
+  transform: scale(1);
 }
-.upper{
-    top: -10vh;
-    border: none;
-    position: absolute;
-    width: 60px;
-    height: 60px;
-    border: 3px solid #C90A0A;
-    border-radius: 30px;
-    background-color: red;
+
+.pop{
+  z-index: 1;
+  animation-name: pop;
+  animation-duration: .5s;
+  animation-direction: ease;
 }
+#hard{
+  background-color: #B9180B;
+}
+#medium{
+  background-color: #EA382A;
+}
+#easy{
+  background-color: #FF6B5F;
+}
+
 @media only screen and (max-width: 1400px) {
-    .option{
-        width: 400px;
-    }
+  .option {
+    width: 400px;
+  }
 }
 @media only screen and (max-width: 1000px) {
-    h1{
-        letter-spacing: 2.617vw;
-        font-size: 3rem;
-    }
-    #container{
-        top: 30vh;
-        left: 25%;
-        width: 50%;
-        flex-direction: column;
-        justify-content: space-between;
-    }
-    .option{
-        width: auto;
-        height: auto;
-        font-size: large;
-    }
-    .chip{
-        position: fixed;
-        left: 10vw;
-        width: 80vw;
-        height: 80vw;
-        border-radius: 50vw;
-    }
-    #player-one{
-        top: -65vw;
-        background-color: red;
-    }
-    #player-two{
-        bottom: -65vw;
-        background-color: yellow;
-    }
+  h1 {
+    letter-spacing: 2.617vw;
+    font-size: 3rem;
+  }
+  #container {
+    top: 30vh;
+    left: 25%;
+    width: 50%;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .option {
+    width: auto;
+    height: auto;
+    font-size: large;
+  }
+  .chip {
+    position: fixed;
+    left: 10vw;
+    width: 80vw;
+    height: 80vw;
+    border-radius: 50vw;
+  }
+  #player-one {
+    top: -65vw;
+    background-color: red;
+  }
+  #pop-up-container{
+    left: 10%;
+    width: 80%;
+  }
 }
-@media only screen and (max-width: 500px) {
-    .chip{
-        position: fixed;
-        left: 0vw;
-        width: 100vw;
-        height: 100vw;
-        border-radius: 50vw;
-    }
-    #player-one{
-        top: -75vw;
-        background-color: red;
-    }
-    #player-two{
-        bottom: -75vw;
-        background-color: yellow;
-    }
-    
-}
+/* @media only screen and (max-width: 500px) {
+  .chip {
+    position: fixed;
+    left: 0vw;
+    width: 100vw;
+    height: 100vw;
+    border-radius: 50vw;
+  }
+  #player-one {
+    top: -75vw;
+    background-color: red;
+  } */
+
 @keyframes down {
-    0%{
-        display: inline;
-        top: -10vh;
-    }
-    100%{
-        top: 100vh;
-        display: none;
-    }
+  0% {
+    display: inline;
+    top: -10vh;
+  }
+  100% {
+    top: 100vh;
+    display: none;
+    
+  }
+}
+@keyframes pop {
+  0%{
+    transform: scale(.7);
+  }
+  100%{
+    transform: scale(1);
+  }
 }
