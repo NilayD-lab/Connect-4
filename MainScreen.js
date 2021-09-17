@@ -14,10 +14,11 @@ let computerButton = document.getElementById('computer')
 let duoButton = document.getElementById('duo') 
 let piece = document.getElementById('piece')
 piece.style.display = "none"
-let timer;
-if (window.innerWidth>=1400){
-    timer = setInterval(rain, 2000)
+let timer = setInterval(rain, 2000);
+if (window.innerWidth<1400){
+    topPiece.remove()
 }
+
 document.body.addEventListener('dblclick', event=>{
     function onlyBackground(child){
         let arr = [computerButton, duoButton, topPiece, piece, popUpContainer, easyButton, mediumButton, hardButton, popUpContainer]
@@ -63,6 +64,9 @@ topPiece.addEventListener('click', ()=>{
 })
 
 computerButton.addEventListener('click', ()=>{
+    piece.style.animationPlayState = 'paused'
+    clearInterval(timer)
+    document.documentElement.classList.add('lock-screen')
     document.body.appendChild(popUpContainer)
     popUpContainer.appendChild(hardButton)
     popUpContainer.appendChild(mediumButton)
@@ -80,6 +84,8 @@ computerButton.addEventListener('click', ()=>{
 
 popUpContainer.addEventListener('click', event=>{
     if (event.target!=hardButton && event.target!=mediumButton && event.target!=easyButton){
+        piece.style.animationPlayState = 'running'
+        timer = setInterval(rain, 2000)
         hardButton.remove()
         mediumButton.remove()
         easyButton.remove()
@@ -91,6 +97,8 @@ popUpContainer.addEventListener('click', event=>{
 })
 window.addEventListener('keydown', event=>{
     if (event.key == "Escape"){
+        piece.style.animationPlayState = 'running'
+        timer = setInterval(rain, 2000)
         hardButton.remove()
         mediumButton.remove()
         easyButton.remove()
@@ -131,19 +139,24 @@ function rain(){
         piece.style.backgroundColor = 'red'
         piece.style.borderColor = '#C90A0A'
     }
-    
-    switch (Math.floor(Math.random()*10)){
-        case 0: piece.style.left = '2vw'; break;
-        case 1: piece.style.left = '5vw'; break;
-        case 2: piece.style.left = '10vw'; break;
-        case 3: piece.style.left = '15vw'; break;
-        case 4: piece.style.left = '20vw'; break;
-        case 5: piece.style.left = '80vw'; break;
-        case 6: piece.style.left = '85vw'; break;
-        case 7: piece.style.left = '90vw'; break;
-        case 8: piece.style.left = '95vw'; break;
-        default: piece.style.left = '95vw'
+    if (window.innerWidth>=1400){
+        switch (Math.floor(Math.random()*10)){
+            case 0: piece.style.left = '2vw'; break;
+            case 1: piece.style.left = '5vw'; break;
+            case 2: piece.style.left = '10vw'; break;
+            case 3: piece.style.left = '15vw'; break;
+            case 4: piece.style.left = '20vw'; break;
+            case 5: piece.style.left = '80vw'; break;
+            case 6: piece.style.left = '85vw'; break;
+            case 7: piece.style.left = '90vw'; break;
+            case 8: piece.style.left = '95vw'; break;
+            default: piece.style.left = '95vw'
+        } 
     }
+    else{
+        piece.style.left =(Math.floor(Math.random()*80)+10) + 'vw'
+    }
+    
     piece.style.display = "inline"
     piece.classList.add('drop')
     piece.classList.remove('upper')
