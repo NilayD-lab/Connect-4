@@ -45,7 +45,10 @@ document.body.addEventListener('dblclick', event=>{
 })
 window.addEventListener('resize', ()=>{
     if (window.innerWidth<1400){
-        clearInterval(timer)
+        topPiece.remove()
+    }
+    else{
+        document.body.appendChild(topPiece)
     }
 
 })
@@ -66,7 +69,6 @@ topPiece.addEventListener('click', ()=>{
 computerButton.addEventListener('click', ()=>{
     piece.style.animationPlayState = 'paused'
     clearInterval(timer)
-    document.documentElement.classList.add('lock-screen')
     document.body.appendChild(popUpContainer)
     popUpContainer.appendChild(hardButton)
     popUpContainer.appendChild(mediumButton)
