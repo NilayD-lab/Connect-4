@@ -13,6 +13,7 @@ let selectedCol;
 let pieces = []
 for (let i=0;i<42;i++){
     pieces[i] = document.createElement('div')
+    pieces[i].style = "--topPos: 0px; --col: 1; --row: 7"
     pieces[i].classList.add('circle')
     pieces[i].classList.add('follow')
 }
@@ -20,7 +21,7 @@ for (let i=0;i<cols.length;i++){
     cols[i].style.gridColumn = i+1;
     cols[i].addEventListener('mouseover', event=>{
         container.appendChild(pieces[count])
-        document.documentElement.style.setProperty('--col', ''+(i+1))
+        pieces[count].style.setProperty('--col', ''+(i+1))
     })
 }
 container.addEventListener('mouseleave', ()=>{

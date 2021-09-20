@@ -1,7 +1,4 @@
-:root {
-  --topPos: none;
-  --col: none;
-}
+
 body {
   display: flex;
   justify-content: space-evenly;
@@ -69,28 +66,28 @@ img {
 }
 .stop{
     /* top: 39.5vw; */
-    grid-row: 7;
+    grid-row: var(--row);
     grid-column: var(--col);
     position: relative;
-    top: -.7vw;
+    transform: translateY(-.7vw);
 }
 @keyframes fall {
     0%{
-        top: 0vw;
+        transform: translateY(0vw);
     }
     50%{
-        top: 39.3vw;
+        transform: translateY(39.3vw);
     }
     60%{
-        top: 36vw;
+        transform: translateY(36vw);
     }
     70%{
-        top: 39.3vw;
+        transform: translateY(39.3vw);
     }
     80%{
-        top: 37vw;
+        transform: translateY(37vw);
     }
     100%{
-        top: 39.3vw;
+        transform: translateY(39vw);
     }
 }
