@@ -38,9 +38,10 @@ img {
 .col {
   grid-row-start: 1;
   grid-row-end: 8;
-  grid-column: 1;
+  grid-column: var(--startCol);
   z-index: 2;
-  background-color: transparent;
+  background-color: black;
+  opacity: 0;
   width: calc(55vw / 7);
   height: 100%;
 }
@@ -52,12 +53,14 @@ img {
   height: 5.1vw;
   border-radius: 200px;
   z-index: 0;
+  grid-column: 1;
 }
 .follow {
   grid-row: 1;
-  top: var(--topPos);
-  grid-column: var(--col);
+  animation: shift 2s ease-in;
+  transform: translateX(var(--startCol));
 }
+
 .drop {
   animation-name: fall;
   animation-duration:700ms;
@@ -65,9 +68,8 @@ img {
   
 }
 .stop{
-    /* top: 39.5vw; */
     grid-row: var(--row);
-    grid-column: var(--col);
+    grid-column: var(--startCol);
     position: relative;
     transform: translateY(-.7vw);
 }
@@ -90,4 +92,12 @@ img {
     100%{
         transform: translateY(39vw);
     }
+}
+@keyframes shift {
+  0%{
+    transform: translateX(var(--startCol));
+  }
+  100%{
+    transform: translateX(var(--endCol))
+  }
 }
