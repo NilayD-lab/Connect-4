@@ -11,6 +11,7 @@ let count = 0;
 let cols = [one, two, three, four, five, six, seven]
 let selectedCol;
 let pieces = []
+let delay;
 for (let i=0;i<42;i++){
     pieces[i] = document.createElement('div')
     pieces[i].style = "--topPos: 0px; --endCol: 1; --row: 7; --startCol: 1; --dropCol: 1;"
@@ -20,11 +21,17 @@ for (let i=0;i<42;i++){
 for (let i=0;i<cols.length;i++){
     cols[i].style.gridColumn = i+1;
     cols[i].addEventListener('mouseover', event=>{
-        container.appendChild(pieces[count])
-        pieces[count].style.setProperty('--endCol', returnColVal("" + (i+1)) + 'vw')
-        pieces[count].addEventListener('animationend',()=>{
-            pieces[count].style.setProperty('--startCol', returnColVal("" + (i+1)) + 'vw')
-        })
+        clearTimeout(delay)
+        
+        delay = setTimeout(()=>{
+            container.appendChild(pieces[count])
+            pieces[count].style.setProperty('--endCol', returnColVal("" + (i+1)) + 'vw')
+            pieces[count].addEventListener('animationstart',()=>{
+                pieces[count].style.setProperty('--dropCol', i+1+'')
+                pieces[count].style.setProperty('--startCol', returnColVal("" + (i+1)) + 'vw')
+            })
+        }, 170)
+       
     })
 }
 container.addEventListener('mouseleave', ()=>{
@@ -42,7 +49,10 @@ container.addEventListener('click', ()=>{
    
 })
 
+function appearWhereMouseIs(i){
+    pieces[count].style.setProperty('--startCol', returnColVal("" + (i+1)) + 'vw')
 
+}
 
 
 
