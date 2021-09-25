@@ -1,4 +1,5 @@
-
+let enteredBoard = false
+let mouseLeft = true
 let container = document.getElementById('container')
 let one = document.getElementById('one')
 let two = document.getElementById('two')
@@ -21,21 +22,31 @@ for (let i=0;i<42;i++){
 for (let i=0;i<cols.length;i++){
     cols[i].style.gridColumn = i+1;
     cols[i].addEventListener('mouseover', event=>{
+        mouseLeft = false
         clearTimeout(delay)
-        
+        console.log(delay)
         delay = setTimeout(()=>{
-            container.appendChild(pieces[count])
-            pieces[count].style.setProperty('--endCol', returnColVal("" + (i+1)) + 'vw')
-            pieces[count].addEventListener('animationstart',()=>{
-                pieces[count].style.setProperty('--dropCol', i+1+'')
-                pieces[count].style.setProperty('--startCol', returnColVal("" + (i+1)) + 'vw')
+            if (enteredBoard && !mouseLeft){
+                 container.appendChild(pieces[count])
+                pieces[count].style.setProperty('--endCol', returnColVal("" + (i+1)) + 'vw')
+                pieces[count].addEventListener('animationstart',()=>{
+                    pieces[count].style.setProperty('--dropCol', i+1+'')
+                    pieces[count].style.setProperty('--startCol', returnColVal("" + (i+1)) + 'vw')
             })
-        }, 170)
+            }
+           
+        }, 200)
        
     })
+    cols[i].addEventListener('mouseleave', ()=>{
+        mouseLeft = true
+    })
 }
+
 container.addEventListener('mouseleave', ()=>{
     pieces[count].remove()
+    pieces[count].style.display = 'none'
+    enteredBoard = false;
 })
 container.addEventListener('click', ()=>{
     pieces[count].classList.add('drop')
@@ -48,7 +59,12 @@ container.addEventListener('click', ()=>{
     
    
 })
-
+container.addEventListener('mouseenter', event=>{
+    pieces[count].style.display = 'block'
+    //pieces[count].style.setProperty('--startCol', '0vw')
+    enteredBoard = true
+    
+})
 function appearWhereMouseIs(i){
     pieces[count].style.setProperty('--startCol', returnColVal("" + (i+1)) + 'vw')
 
