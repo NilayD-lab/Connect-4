@@ -24,15 +24,11 @@ for (let i = 0; i < cols.length; i++) {
 
     cols[i].addEventListener('mouseover', event => {
         clearTimeout(delay)
-        console.log(mouseLeft)
         delay = setTimeout(() => {
             cols[i].addEventListener('mouseleave', () => {
-                mouseLeft = true
-                if (mouseLeft) {
-                    console.log('left ' + i)
-                }
+                clearTimeout(delay)
             })
-            if (enteredBoard && !mouseLeft) {
+            if (enteredBoard) {
                 container.appendChild(pieces[count])
                 pieces[count].style.setProperty('--endCol', returnColVal("" + (i + 1)) + 'vw')
                 pieces[count].addEventListener('animationstart', () => {
@@ -43,14 +39,6 @@ for (let i = 0; i < cols.length; i++) {
 
                 })
             }
-            else {
-                clearTimeout(delay)
-                return
-            }
-
-
-
-
         }, 200)
 
 
@@ -77,10 +65,6 @@ container.addEventListener('mousedown', () => {
         pieces[count].classList.add('stop')
         count++
     })
-    pieces[count].addEventListener('animationstart', () => {
-
-    })
-
 
 })
 container.addEventListener('mouseover', event => {
@@ -99,13 +83,27 @@ function appearWhereMouseIs(i) {
 
 
 function returnColVal(col) {
-    switch (col) {
-        case "1": return 0; break;
-        case "2": return 1 * (55 / 7); break;
-        case "3": return 2 * (55 / 7); break;
-        case "4": return 3 * (55 / 7); break;
-        case "5": return 4 * (55 / 7); break;
-        case "6": return 5 * (55 / 7); break;
-        default: return 6 * (55 / 7);
+    if (window.innerWidth >= 1000) {
+        switch (col) {
+            case "1": return 0; break;
+            case "2": return 1 * (55 / 7); break;
+            case "3": return 2 * (55 / 7); break;
+            case "4": return 3 * (55 / 7); break;
+            case "5": return 4 * (55 / 7); break;
+            case "6": return 5 * (55 / 7); break;
+            default: return 6 * (55 / 7);
+        }
     }
+    else{
+        switch (col) {
+            case "1": return 0; break;
+            case "2": return 1 * (90 / 7); break;
+            case "3": return 2 * (90 / 7); break;
+            case "4": return 3 * (90 / 7); break;
+            case "5": return 4 * (90 / 7); break;
+            case "6": return 5 * (90 / 7); break;
+            default: return 6 * (90 / 7);
+        }
+    }
+
 }
