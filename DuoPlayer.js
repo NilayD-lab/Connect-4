@@ -15,7 +15,11 @@ let pieces = []
 let delay;
 for (let i = 0; i < 42; i++) {
     pieces[i] = document.createElement('div')
-    pieces[i].style = "--topPos: 0px; --endCol: 1; --row: 7; --startCol: 1; --dropCol: 1;"
+    let shift = 1;
+    if (window.innerWidth < 1000) {
+        shift = 0
+    }
+    pieces[i].style = "--topPos:" + shift + "px; --endCol: 4; --row: 7; --startCol: 4; --dropCol: 4;"
     pieces[i].classList.add('circle')
     pieces[i].classList.add('follow')
 }
@@ -28,20 +32,16 @@ for (let i = 0; i < cols.length; i++) {
             cols[i].addEventListener('mouseleave', () => {
                 clearTimeout(delay)
             })
-            if (enteredBoard) {
+            if (enteredBoard && !pieces[count].classList.contains('drop')) {
                 container.appendChild(pieces[count])
                 pieces[count].style.setProperty('--endCol', returnColVal("" + (i + 1)) + 'vw')
                 pieces[count].addEventListener('animationstart', () => {
-                    if (!pieces[count].classList.contains('drop')) {
-                        pieces[count].style.setProperty('--dropCol', i + 1 + '')
-                        pieces[count].style.setProperty('--startCol', returnColVal("" + (i + 1)) + 'vw')
-                    }
+                    pieces[count].style.setProperty('--dropCol', i + 1 + '')
+                    pieces[count].style.setProperty('--startCol', returnColVal("" + (i + 1)) + 'vw')
 
                 })
             }
         }, 200)
-
-
         mouseLeft = false
 
 
@@ -59,11 +59,14 @@ container.addEventListener('mouseleave', () => {
 })
 container.addEventListener('mousedown', () => {
     pieces[count].classList.add('drop')
-    pieces[count].addEventListener('animationend', () => {
-        pieces[count].classList.remove('follow')
-        pieces[count].classList.remove('drop')
-        pieces[count].classList.add('stop')
-        count++
+    pieces[count].addEventListener('animationend', event => {
+        if (event.animationName == 'fall') {
+            pieces[count].classList.remove('follow')
+            pieces[count].classList.remove('drop')
+            pieces[count].classList.add('stop')
+            count++
+        }
+
     })
 
 })
@@ -94,7 +97,7 @@ function returnColVal(col) {
             default: return 6 * (55 / 7);
         }
     }
-    else{
+    else {
         switch (col) {
             case "1": return 0; break;
             case "2": return 1 * (90 / 7); break;

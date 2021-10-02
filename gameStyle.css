@@ -1,11 +1,73 @@
+@import url("https://fonts.googleapis.com/css2?family=Varela+Round&display=swap");
+@import url('http://fonts.cdnfonts.com/css/modern-sans');
 body {
-  display: flex;
-  justify-content: space-evenly;
+  font-family: "Varela Round", sans-serif;
+  display: grid;
+  grid-column: 25vw 50vw auto;
+  grid-gap: 0px;
+  grid-row: auto;
   align-items: center;
   background-color: #eee9e3;
 }
+#buttons-container{
+  display: flex;
+  flex-direction: column;
+  background-color: none;
+  grid-column: 1;
+  grid-row: 1;
+  width: 100%;
+  height: 60%;
+  align-self: top;
+  justify-content: space-between;
+  align-items: center;
+}
+.btn{
+  background-color: #669ffa;
+  -webkit-text-fill-color: white;
+  width: 10vw;
+  height: 10vw;
+  border-radius: 300%;
+  text-align: center;
+}
+#redo{
+ 
+  font-size: 5vw;
 
+}
+#redo::before{
+  content: "❮";
+  font-weight: bolder;
+  position: absolute;
+  background-color: none;
+  width: 100px;
+  left: 11%;
+  top: 22.5%;
+  transition: transform 500ms;
+}
+#redo:hover::before{
+  
+  transform: translateX(-10%);
+  content: "❮❮";
+
+}
+#clear{
+  transition: transform 500ms;
+}
+#clear::before{
+  position: relative;
+  top: -8.5%;
+  content: "✖";
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+  font-size: 8.2vw;
+  width: 0;
+}
+#clear:hover{
+  transform: rotate(90deg);
+}
 #container {
+  grid-column: 2;
   width: 55vw;
   height: 46vw;
   display: grid;
@@ -26,12 +88,12 @@ img {
   height: auto;
   border-radius: 0.57vw;
   z-index: 1;
-  /* user-drag: none;
+  user-drag: none;
   -webkit-user-drag: none;
   user-select: none;
   -moz-user-select: none;
   -webkit-user-select: none;
-  -ms-user-select: none; */
+  -ms-user-select: none;
 }
 
 .col {
@@ -68,6 +130,8 @@ img {
   
 }
 .stop{
+    position: relative;
+    top: var(--topPos);
     z-index: 1;
     grid-row: var(--row);
     grid-column: var(--dropCol);
@@ -80,6 +144,7 @@ img {
 }
 @keyframes fall {
     0%{
+        
         transform: translateY(0vw);
     }
     50%{
@@ -100,9 +165,11 @@ img {
 }
 @keyframes shift {
   0%{
+    -moz-transform: translateX(var(--startCol));
     transform: translateX(var(--startCol));
   }
   100%{
+    -moz-transform: translateX(var(--endCol));
     transform: translateX(var(--endCol))
   }
 }
