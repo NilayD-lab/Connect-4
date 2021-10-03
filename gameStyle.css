@@ -22,38 +22,88 @@ body {
   align-items: center;
 }
 .btn{
+  position: relative;
   background-color: #669ffa;
-  -webkit-text-fill-color: white;
+  -webkit-text-fill-color: #eee9e3;
   width: 10vw;
   height: 10vw;
-  border-radius: 300%;
+  border-radius: 100%;
+  font-size: .9vw;
   text-align: center;
+  border: solid black;
+  box-shadow: #669ffa;
+  outline: solid black;
+  outline-offset: .9vw;
 }
-#redo{
- 
-  font-size: 5vw;
 
+
+
+#undo:hover p{
+  opacity: 1;
 }
-#redo::before{
+#undo::before, #undo::after{
   content: "❮";
+  font-size: 5vw;
   font-weight: bolder;
   position: absolute;
   background-color: none;
-  width: 100px;
-  left: 11%;
-  top: 22.5%;
+  left: 35%;
+  top: 15%;
   transition: transform 500ms;
 }
-#redo:hover::before{
-  
-  transform: translateX(-10%);
-  content: "❮❮";
+#undo:hover::before{
+  transform: translateX(-60%);
+}
+#undo:hover::after{
+  transform: translateX(90%);
+}
 
+#undo p{
+  margin-top: 45%;
+  margin-right: 5%;
+  opacity: 0;
+  transition: opacity 500ms;
+  
 }
+
+
+
 #clear{
-  transition: transform 500ms;
+  /* transition: transform 0; */
 }
-#clear::before{
+#clear:hover{
+  /* transform: rotate(-360deg); */
+}
+
+#clear p{
+  margin-top: 45%;
+  opacity: 0;
+  transition: opacity 1000ms;
+  transition-delay: 100ms;
+}
+#clear:hover p{
+  opacity: 1;
+}
+#arr{
+  position: absolute;
+  top: 28%;
+  left: 37%;
+  height: 0;
+  width: 0;
+  border-left: calc(45vw/19.2) solid #eee9e3;
+  border-top: calc(45vw/19.2) solid transparent;
+  border-bottom: calc(45vw/19.2) solid transparent;
+  -webkit-trwansform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(180deg);
+  transition: top 400ms, border-left-color 500ms;
+}
+#clear:hover #arr{
+  top: -28%;
+  border-left-color: black;
+}
+
+/* #clear::before{
   position: relative;
   top: -8.5%;
   content: "✖";
@@ -62,10 +112,20 @@ body {
   transform: rotate(45deg);
   font-size: 8.2vw;
   width: 0;
-}
-#clear:hover{
-  transform: rotate(90deg);
-}
+} */
+
+/* #clear:hover::before{
+  position: absolute;
+  top: 0vw;
+  left: 0vw;
+} */
+
+
+
+
+
+
+
 #container {
   grid-column: 2;
   width: 55vw;
@@ -101,11 +161,10 @@ img {
   grid-row-end: 8;
   grid-column: var(--startCol);
   z-index: 2;
-  background-color: black;
-  opacity: 0;
   width: 100%;
   height: 100%;
 }
+
 .circle {
   position: relative;
   align-self: center;
@@ -184,6 +243,9 @@ img {
     width: 5.04vw;
     height: 5.04vw;
   }
+}
+@keyframes introduce {
+  
 }
 
 @media screen and (max-width: 1000px) {
