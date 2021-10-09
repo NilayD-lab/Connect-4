@@ -1,5 +1,12 @@
 @import url("https://fonts.googleapis.com/css2?family=Varela+Round&display=swap");
 @import url('http://fonts.cdnfonts.com/css/modern-sans');
+:root{
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
 body {
   font-family: "Varela Round", sans-serif;
   display: grid;
@@ -31,16 +38,16 @@ body {
   font-size: .9vw;
   text-align: center;
   border: solid black;
-  box-shadow: #669ffa;
   outline: solid black;
   outline-offset: .9vw;
+  box-shadow: 0px 0px 0px 0px black;
+
 }
-
-
 
 #undo:hover p{
   opacity: 1;
 }
+
 #undo::before, #undo::after{
   content: "❮";
   font-size: 5vw;
@@ -52,7 +59,7 @@ body {
   transition: transform 500ms;
 }
 #undo:hover::before{
-  transform: translateX(-60%);
+  transform: translateX(-65%);
 }
 #undo:hover::after{
   transform: translateX(90%);
@@ -66,20 +73,20 @@ body {
   
 }
 
-
-
 #clear{
-  /* transition: transform 0; */
-}
-#clear:hover{
-  /* transform: rotate(-360deg); */
-}
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transform-origin: center center;
 
+}
 #clear p{
-  margin-top: 45%;
+  display: inline;
   opacity: 0;
-  transition: opacity 1000ms;
-  transition-delay: 100ms;
+  margin: 0;
+  transition: opacity 1000ms 100ms;
+
 }
 #clear:hover p{
   opacity: 1;
@@ -93,38 +100,14 @@ body {
   border-left: calc(45vw/19.2) solid #eee9e3;
   border-top: calc(45vw/19.2) solid transparent;
   border-bottom: calc(45vw/19.2) solid transparent;
-  -webkit-trwansform: rotate(45deg);
-  -ms-transform: rotate(45deg);
+  -ms-transform: rotate(180deg);
   transform: rotate(180deg);
-  transition: top 400ms, border-left-color 500ms;
+  transition: top 400ms linear, border-left-color 500ms;
 }
 #clear:hover #arr{
   top: -28%;
   border-left-color: black;
 }
-
-/* #clear::before{
-  position: relative;
-  top: -8.5%;
-  content: "✖";
-  -webkit-transform: rotate(45deg);
-  -ms-transform: rotate(45deg);
-  transform: rotate(45deg);
-  font-size: 8.2vw;
-  width: 0;
-} */
-
-/* #clear:hover::before{
-  position: absolute;
-  top: 0vw;
-  left: 0vw;
-} */
-
-
-
-
-
-
 
 #container {
   grid-column: 2;
@@ -148,7 +131,6 @@ img {
   height: auto;
   border-radius: 0.57vw;
   z-index: 1;
-  user-drag: none;
   -webkit-user-drag: none;
   user-select: none;
   -moz-user-select: none;
@@ -168,12 +150,13 @@ img {
 .circle {
   position: relative;
   align-self: center;
-  background-color: red;
+  background-color: var(--innerColor);
   width: 5vw;
   height: 5vw;
   border-radius: 200px;
   z-index: 0;
   grid-column: 1;
+  border: var(--borderColor) solid .156vw;
 }
 .follow {
   grid-row: 1;
@@ -191,16 +174,32 @@ img {
 .stop{
     position: relative;
     top: var(--topPos);
-    z-index: 1;
+    z-index: -1;
     grid-row: var(--row);
     grid-column: var(--dropCol);
     position: relative;
     transform: translateY(-.7vw);
-    animation: grow 300ms ease-out;
-    z-index: 1;
+    /* animation: grow 300ms ease-out; */
+    z-index: 0;
     width: 5.05vw;
     height: 5.05vw;
 }
+.down{
+  box-shadow: 0px 0px 0px .9vw black;
+  transition: box-shadow 150ms;
+}
+.rotate{
+  transform: rotate(-360deg);
+  box-shadow: 0px 0px 0px .9vw black;
+  transition: transform 2000ms ease-out, box-shadow 2000ms ease-out;
+
+}
+.rotate-back{
+  transform: rotate(0deg);
+  box-shadow: 0px 0px 0px 0px black;
+  transition:  transform 500ms ease, box-shadow 500ms ease;
+}
+
 @keyframes fall {
     0%{
         
@@ -232,28 +231,29 @@ img {
     transform: translateX(var(--endCol))
   }
 }
-@keyframes grow {
-  0%{
-    z-index: 0;
-    width: 5vw;
-    height: 5vw;
-  }
-  100%{
-    z-index: 1;
-    width: 5.04vw;
-    height: 5.04vw;
-  }
-}
-@keyframes introduce {
-  
-}
+
 
 @media screen and (max-width: 1000px) {
+  body{
+    grid-template-columns: auto;
+    grid-template-rows: 76.36vw 10vh;
+    grid-gap: 3vh;
+    justify-content: center;
+  }
+  #buttons-container{
+    grid-column: 0;
+    grid-row: 2;
+    height: 10vh;
+    flex-direction: row;
+    justify-content: space-evenly;
+  }
   img{
     width: 90vw;
     height: auto;
   }
   #container{
+    grid-column: 1;
+    grid-row: 1;
     width: 90vw;
     height: 76.36vw;
     grid-template-columns: repeat(7, calc(90vw / 7));
@@ -288,4 +288,38 @@ img {
     }
   }
   
+}
+@media screen and (max-width: 800px) {
+  body{
+    grid-gap: 10vh;
+  }
+  .btn{
+
+    width: 20vw;
+    height: 20vw;
+    font-size: 1.8vw;
+    outline-offset: 1.8vw;
+
+  
+  }
+  #arr{
+    top: 28%;
+    left: 37%;
+    height: 0;
+    width: 0;
+    border-left: calc(90vw/19.2) solid #eee9e3;
+    border-top: calc(90vw/19.2) solid transparent;
+    border-bottom: calc(90vw/19.2) solid transparent;
+  }
+  #undo::before, #undo::after{
+
+    font-size: 10vw;
+  
+  }
+  .rotate{
+    box-shadow: 0px 0px 0px 1.8vw black;
+  }
+  .down{
+    box-shadow: 0px 0px 0px 1.8vw black;
+  }
 }

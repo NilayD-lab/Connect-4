@@ -1,3 +1,5 @@
+let undoButton = document.getElementById('undo')
+let clearButton = document.getElementById('clear')
 let enteredBoard = false
 let mouseLeft = true
 let container = document.getElementById('container')
@@ -19,13 +21,12 @@ for (let i = 0; i < 42; i++) {
     if (window.innerWidth < 1000) {
         shift = 0
     }
-    pieces[i].style = "--topPos:" + shift + "px; --endCol: 4; --row: 7; --startCol: 4; --dropCol: 4;"
+    pieces[i].style = "--topPos:" + shift + "px; --endCol: 4; --row: 7; --startCol: 4; --dropCol: 4; --innerColor: red; --borderColor: #c90a0a;"
     pieces[i].classList.add('circle')
     pieces[i].classList.add('follow')
 }
 for (let i = 0; i < cols.length; i++) {
     cols[i].style.gridColumn = i + 1;
-
     cols[i].addEventListener('mouseover', event => {
         clearTimeout(delay)
         delay = setTimeout(() => {
@@ -70,19 +71,81 @@ container.addEventListener('mousedown', () => {
     })
 
 })
-container.addEventListener('mouseover', event => {
+container.addEventListener('mouseover', () => {
     pieces[count].style.display = 'block'
-    //pieces[count].style.setProperty('--startCol', '0vw')
     enteredBoard = true
-
 })
+
+undoButton.addEventListener('mousedown', () => {
+    undoButton.classList.add('down')
+    undoButton.style.boxShadow = '0px 0px 0px .9vw black'
+    if (window.innerWidth<1000){
+        undoButton.style.boxShadow = '0px 0px 0px 1.8vw black'
+    }
+    undoButton.addEventListener('mouseup', () => {
+        undoButton.style.boxShadow = '0px 0px 0px 0px black'
+        undoButton.style.opacity = '1'
+        undoButton.addEventListener('animationend', () => {
+            undoButton.classList.remove('down')
+
+        })
+    })
+})
+undoButton.addEventListener('mouseleave', () => {
+    undoButton.style.boxShadow = '0px 0px 0px 0px black'
+    undoButton.style.opacity = '1'
+    undoButton.classList.remove('down')
+})
+
+clearButton.querySelector('p').addEventListener('transitionend', () => {
+    clearButton.addEventListener('mousedown', () => {
+        clearButton.classList.remove('rotate-back')
+        clearButton.classList.add('rotate')
+        clearButton.addEventListener('mouseup', () => {
+            clearButton.classList.remove('rotate')
+            clearButton.classList.add('rotate-back')
+
+
+        })
+
+    })
+    clearButton.addEventListener('mouseleave', () => {
+        clearButton.classList.remove('rotate')
+        clearButton.classList.add('rotate-back')
+
+    })
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 function appearWhereMouseIs(i) {
     pieces[count].style.setProperty('--startCol', returnColVal("" + (i + 1)) + '%')
 
 }
-
-
-
 
 
 function returnColVal(col) {
