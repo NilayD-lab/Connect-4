@@ -39,9 +39,10 @@ body {
   text-align: center;
   border: solid black;
   outline: solid black;
+  -moz-outline-radius: 100%;
   outline-offset: .9vw;
   box-shadow: 0px 0px 0px 0px black;
-
+  
 }
 
 #undo:hover p{
@@ -161,7 +162,11 @@ img {
 .follow {
   grid-row: 1;
   animation: shift 400ms ease;
+  -moz-animation: shift 400ms ease;
+  -webkit-animation: shift 400ms ease;
   transform: translateX(var(--startCol));
+  -moz-transform: translateX(var(--startCol));
+  -webkit-transform: translateX(var(--startCol));
 }
 
 .drop {
@@ -221,13 +226,29 @@ img {
         transform: translateY(39vw);
     }
 }
-@keyframes shift {
+@-webkit-keyframes shift{
+  0%{
+    -webkit-transform: translateX(var(--startCol));
+
+  }
+  100%{
+    -webkit-transform: translateX(var(--endCol));
+
+  }
+}
+@-moz-keyframes shift{
   0%{
     -moz-transform: translateX(var(--startCol));
-    transform: translateX(var(--startCol));
   }
   100%{
     -moz-transform: translateX(var(--endCol));
+  }
+}
+@keyframes shift {
+  0%{
+    transform: translateX(var(--startCol));
+  }
+  100%{
     transform: translateX(var(--endCol))
   }
 }
@@ -237,7 +258,8 @@ img {
   body{
     grid-template-columns: auto;
     grid-template-rows: 76.36vw 10vh;
-    grid-gap: 3vh;
+    grid-gap: 10vh;
+
     justify-content: center;
   }
   #buttons-container{
@@ -267,8 +289,39 @@ img {
     animation: none;
     z-index: 0;
   }
+
+  .btn{
+
+    width: 20vw;
+    height: 20vw;
+    font-size: 3.6vw;
+    outline: none;
+    border: black solid 1.8vw;
+  
+  }
+  #clear p{
+    opacity: 1;
+  }
+  #arr{
+    display: none;
+  }
+  #undo{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  #undo p{
+    margin: 0;
+    opacity: 1;
+  }
+  #undo::before, #undo::after{
+
+    display: none;
+  
+  }
   @keyframes fall {
     0%{
+      
       transform: translateY(0vw);
     }
     50%{
@@ -288,38 +341,4 @@ img {
     }
   }
   
-}
-@media screen and (max-width: 800px) {
-  body{
-    grid-gap: 10vh;
-  }
-  .btn{
-
-    width: 20vw;
-    height: 20vw;
-    font-size: 1.8vw;
-    outline-offset: 1.8vw;
-
-  
-  }
-  #arr{
-    top: 28%;
-    left: 37%;
-    height: 0;
-    width: 0;
-    border-left: calc(90vw/19.2) solid #eee9e3;
-    border-top: calc(90vw/19.2) solid transparent;
-    border-bottom: calc(90vw/19.2) solid transparent;
-  }
-  #undo::before, #undo::after{
-
-    font-size: 10vw;
-  
-  }
-  .rotate{
-    box-shadow: 0px 0px 0px 1.8vw black;
-  }
-  .down{
-    box-shadow: 0px 0px 0px 1.8vw black;
-  }
 }

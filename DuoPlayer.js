@@ -58,7 +58,9 @@ container.addEventListener('mouseleave', () => {
     }
 
 })
-container.addEventListener('mousedown', () => {
+container.addEventListener('mousedown', dropChip)
+
+function dropChip(){
     pieces[count].classList.add('drop')
     pieces[count].addEventListener('animationend', event => {
         if (event.animationName == 'fall') {
@@ -69,8 +71,7 @@ container.addEventListener('mousedown', () => {
         }
 
     })
-
-})
+}
 container.addEventListener('mouseover', () => {
     pieces[count].style.display = 'block'
     enteredBoard = true
