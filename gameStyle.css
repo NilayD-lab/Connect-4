@@ -6,6 +6,9 @@
   -webkit-user-select: none;
   -ms-user-select: none;
   user-select: none;
+  --dropDepth: 39.3vw;
+  --firstBounce: 36vw;
+  --secondBounce: 37vw;
 }
 body {
   font-family: "Varela Round", sans-serif;
@@ -14,7 +17,7 @@ body {
   grid-gap: 0px;
   grid-row: auto;
   align-items: center;
-  background-color: #eee9e3;
+  background-color: black;
 }
 #buttons-container{
   display: flex;
@@ -171,7 +174,7 @@ img {
 
 .drop {
   grid-column: var(--dropCol);
-  animation-name: fall;
+  animation-name: fall-rows-3-5;
   animation-duration:700ms;
   animation-timing-function: ease-in;
   
@@ -179,15 +182,9 @@ img {
 .stop{
     position: relative;
     top: var(--topPos);
-    z-index: -1;
     grid-row: var(--row);
     grid-column: var(--dropCol);
-    position: relative;
-    transform: translateY(-.7vw);
-    /* animation: grow 300ms ease-out; */
     z-index: 0;
-    width: 5.05vw;
-    height: 5.05vw;
 }
 .down{
   box-shadow: 0px 0px 0px .9vw black;
@@ -205,27 +202,59 @@ img {
   transition:  transform 500ms ease, box-shadow 500ms ease;
 }
 
-@keyframes fall {
-    0%{
-        
-        transform: translateY(0vw);
-    }
-    50%{
-        transform: translateY(39.3vw);
-    }
-    60%{
-        transform: translateY(36vw);
-    }
-    70%{
-        transform: translateY(39.3vw);
-    }
-    80%{
-        transform: translateY(37vw);
-    }
-    100%{
-        transform: translateY(39vw);
-    }
+
+@keyframes fall-rows-3-5 {
+  0%{
+    transform: translateY(0vw);
+  }
+  50%{
+      transform: translateY(var(--dropDepth));
+  }
+  60%{
+    transform: translateY(var(--firstBounce));
+  }
+  70%{
+    transform: translateY(var(--dropDepth));
+  }
+  80%{
+      transform: translateY(var(--secondBounce));
+  }
+  100%{
+      transform: translateY(var(--dropDepth));
+  }
+
 }
+
+@keyframes fall-rows-1-2 {
+  0%{
+    transform: translateY(0vw);
+  }
+ 70%{
+    transform: translateY(var(--dropDepth));
+
+  }
+  80%{
+    transform: translateY(var(--firstBounce));
+
+  }
+  100%{
+    transform: translateY(var(--dropDepth));
+
+  }
+}
+
+@keyframes fall-row-0 {
+  0%{
+    transform: translateY(0vw);
+    
+  }
+  100%{
+    transform: translateY(var(--dropDepth));
+
+  }
+}
+
+
 @-webkit-keyframes shift{
   0%{
     -webkit-transform: translateX(var(--startCol));
