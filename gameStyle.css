@@ -17,7 +17,7 @@ body {
   grid-gap: 0px;
   grid-row: auto;
   align-items: center;
-  background-color: black;
+  background-color: #eee9e3;
 }
 #buttons-container{
   display: flex;
@@ -202,7 +202,18 @@ img {
   transition:  transform 500ms ease, box-shadow 500ms ease;
 }
 
+.disappear{
+  animation: shrink 300ms ease-in;
+}
 
+@keyframes shrink {
+  0%{
+    transform: scale(1);
+  }
+  100%{
+    transform: scale(0);
+  }
+}
 @keyframes fall-rows-3-5 {
   0%{
     transform: translateY(0vw);

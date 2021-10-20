@@ -27,8 +27,8 @@ export function calculateWin(num, board) {
 function backSlashSearch(num, board) {
     let topList = []
     let bottomList = []
-    for (let r = 0; r < board.length - 4; r++) {
-        for (let c = 0; c < board[r].length - 1; c++) {
+    for (let r = board.length - 4; r >= 0; r--) {
+        for (let c = 0; c < board[0].length - 1 - r; c++) {
             topList.push(board[r + c][c])
             bottomList.push(board[c][r + c + 1])
         }
@@ -51,7 +51,7 @@ function backSlashSearch(num, board) {
 function fowardSlashSearch(num, board) {
     let topList = []
     let bottomList = []
-    for (let r = 0; r < board.length - 1; r++) {
+    for (let r = board.length - 1; r > 2; r--) {
         for (let c = 0; c <= r; c++) {
             topList.push(board[r - c][c])
             bottomList.push(board[board.length - 1 - r + c][board[0].length - 1 - c])

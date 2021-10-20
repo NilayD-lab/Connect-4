@@ -1,9 +1,9 @@
 import * as BackEnd from './backEnd.js'
-
+let gameEnd = false
 let undoButton = document.getElementById('undo')
 let clearButton = document.getElementById('clear')
 let enteredBoard = false
-let mouseLeft = true
+let mouseLeft = false
 let container = document.getElementById('container')
 let one = document.getElementById('one')
 let two = document.getElementById('two')
@@ -16,10 +16,11 @@ let count = 0;
 let cols = [one, two, three, four, five, six, seven]
 let pieces = []
 let delay;
+let reachDelay;
 let turn = 0;
 let columnLengths = [5, 5, 5, 5, 5, 5, 5]
 let board = BackEnd.makeBoard()
-
+let ended = false;
 let innerColor = ""
 let borderColor = ""
 for (let i = 0; i < 42; i++) {
@@ -43,6 +44,7 @@ turn = 0
 for (let i = 0; i < cols.length; i++) {
     cols[i].style.gridColumn = i + 1;
     cols[i].addEventListener('mouseover', event => {
+        clearInterval(reachDelay)
         clearTimeout(delay)
         delay = setTimeout(() => {
             cols[i].addEventListener('mouseleave', () => {
@@ -50,44 +52,50 @@ for (let i = 0; i < cols.length; i++) {
             })
             if (enteredBoard && !pieces[count].classList.contains('drop')) {
                 container.appendChild(pieces[count])
-                pieces[count].style.setProperty('--endCol', returnColVal("" + (i + 1)) + 'vw')
+                pieces[count].style.setProperty('--endCol', returnColVal("" + (parseInt(event.target.style.gridColumn))) + 'vw')
                 pieces[count].addEventListener('animationstart', () => {
-                    pieces[count].style.setProperty('--dropCol', i + 1 + '')
-                    pieces[count].style.setProperty('--startCol', returnColVal("" + (i + 1)) + 'vw')
+                    pieces[count].style.setProperty('--startCol', returnColVal("" + (parseInt(event.target.style.gridColumn))) + 'vw')
 
                 })
                 pieces[count].onanimationend = event => {
+
                     if (event.animationName == 'shift') {
                         container.onmousedown = event => {
-                            dropChip(parseInt(('' + event.target.style.gridColumn).substring(0, 1)) - 1)
+                            pieces[count].style.setProperty('--dropCol', parseInt(event.target.style.gridColumn) + '')
+
+                            dropChip(parseInt(event.target.style.gridColumn) - 1)
                         }
                     }
 
+
+
                 }
             }
-        }, 200)
-        mouseLeft = false
 
+        }, 200)
 
     })
-
 }
 
 container.addEventListener('mouseleave', () => {
+    clearInterval(reachDelay)
     if (!pieces[count].classList.contains('drop')) {
         pieces[count].remove()
         pieces[count].style.display = 'none'
         enteredBoard = false;
     }
-
 })
-
+let thing = 0;
 function dropChip(i) {
     container.onmousedown = () => {
         console.log()
     }
     if (columnLengths[i] >= 0) {
         board[columnLengths[i]][i] = turn % 2 + 1
+        //
+        gameEnd = BackEnd.calculateWin(1, board)
+
+        //
         pieces[count].style.setProperty('--row', '' + (columnLengths[i] + 2))
         pieces[count].style.setProperty('--topPos', returnRowShift("" + columnLengths[i]))
         pieces[count].classList.add('drop')
@@ -100,11 +108,48 @@ function dropChip(i) {
                 pieces[count].classList.add('stop')
                 count++
                 turn++;
+                thing = 0
+                reachDelay = setInterval(reachMouse, 1)
+
+
+
+
             }
 
         })
     }
 
+}
+
+
+function reachMouse() {
+    if (!enteredBoard) {
+        clearInterval(reachDelay)
+    }
+    if (thing > 100) {
+        clearInterval(reachDelay)
+        container.appendChild(pieces[count])
+
+        pieces[count].onanimationend = event => {
+            if (event.animationName == 'shift') {
+                container.onmousedown = event => {
+                    pieces[count].style.setProperty('--dropCol', parseInt(event.target.style.gridColumn) + '')
+                    dropChip(parseInt(event.target.style.gridColumn) - 1)
+                }
+            }
+
+        }
+
+
+    }
+    let col = parseInt(getComputedStyle(document.querySelectorAll(':hover')[3]).gridColumn)
+    pieces[count].style.setProperty('--endCol', returnColVal("" + (col)) + 'vw')
+    pieces[count].addEventListener('animationstart', () => {
+        pieces[count].style.setProperty('--startCol', returnColVal("" + (col)) + 'vw')
+
+    })
+
+    thing++;
 }
 container.addEventListener('mouseover', () => {
     pieces[count].style.display = 'block'
@@ -120,6 +165,11 @@ undoButton.addEventListener('mousedown', () => {
     undoButton.addEventListener('mouseup', () => {
         undoButton.style.boxShadow = '0px 0px 0px 0px black'
         undoButton.style.opacity = '1'
+        console.log(count)
+        count--
+        console.log(count)
+
+        pieces[count].style.transform = 'scale(0);'
         undoButton.addEventListener('animationend', () => {
             undoButton.classList.remove('down')
 
@@ -171,14 +221,14 @@ clearButton.querySelector('p').addEventListener('transitionend', () => {
 
 function editDropAnimation(row) {
     let multiplier = 1;
-    if (window.innerWidth<1000){
-        multiplier = 90/55
+    if (window.innerWidth < 1000) {
+        multiplier = 90 / 55
     }
     if (row > 3) {
         pieces[count].style.animationName = 'fall-rows-3-5'
         pieces[count].style.animationDuration = '700ms'
     }
-    else if (row == 3){
+    else if (row == 3) {
         pieces[count].style.animationName = 'fall-rows-3-5'
         pieces[count].style.animationDuration = '600ms'
     }
@@ -195,9 +245,9 @@ function editDropAnimation(row) {
         pieces[count].style.animationDuration = '150ms'
     }
 
-    pieces[count].style.setProperty('--dropDepth', multiplier*parseFloat(rowDepth(row)) + 'vw')
-    pieces[count].style.setProperty('--firstBounce', multiplier*parseFloat(firstBounce(row)) + 'vw')
-    pieces[count].style.setProperty('--secondBounce', multiplier*parseFloat(secondBounce(row)) + 'vw')
+    pieces[count].style.setProperty('--dropDepth', multiplier * parseFloat(rowDepth(row)) + 'vw')
+    pieces[count].style.setProperty('--firstBounce', multiplier * parseFloat(firstBounce(row)) + 'vw')
+    pieces[count].style.setProperty('--secondBounce', multiplier * parseFloat(secondBounce(row)) + 'vw')
 
 }
 function firstBounce(row) {
