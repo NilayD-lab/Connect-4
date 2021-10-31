@@ -287,6 +287,11 @@ clearButton.querySelector('p').addEventListener('transitionend', () => {
             clearButton.classList.add('rotate-back')
 
             if (getComputedStyle(clearButton).transform.substring(7, 8) >= ".94") {
+                for (let i = 0; i <= count; i++) {
+                    pieces[i].classList.remove('red-won')
+                    pieces[i].classList.remove('yellow-won')
+    
+                }
                 while (count != 0) {
                     count--
                     pieces[count].classList.add('disappear')
