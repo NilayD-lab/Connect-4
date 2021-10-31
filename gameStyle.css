@@ -117,7 +117,7 @@ body {
 #container {
   grid-column: 2;
   width: 55vw;
-  height: 98vh;
+  height: 46vw;
   display: grid;
   grid-template-columns: repeat(7, calc(55vw / 7));
   grid-template-rows: repeat(7, calc(40vw / 6));

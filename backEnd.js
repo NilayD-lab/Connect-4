@@ -21,6 +21,8 @@ export function print(board) {
     }
 }
 
+
+
 export function calculateWin(num, board) {
     return backSlashSearch(num, board) || fowardSlashSearch(num, board) || horizontalSearch(num, board) || verticalSearch(num, board)
 }
@@ -64,15 +66,28 @@ function fowardSlashSearch(num, board) {
         }
         for (let i = 0; i < topList.length - 3; i++) {
             if (getSpot(topList[i], board) == num && getSpot(topList[i + 1], board) == num && getSpot(topList[i + 2], board) == num && getSpot(topList[i + 3], board) == num) {
+                for (let z=topList.length-1;z>i+3;z++){
+                    topList.pop()
+                }
                 winningLine = topList
                 return true
+            }
+            else{
+                topList.shift()
+                i--;
             }
         }
         for (let i = 0; i < bottomList.length - 3; i++) {
             if (getSpot(bottomList[i], board) == num && getSpot(bottomList[i + 1], board) == num && getSpot(bottomList[i + 2], board) == num && getSpot(bottomList[i + 3], board) == num) {
+                for (let z=bottomList.length-1;z>i+3;z++){
+                    bottomList.pop()
+                }
                 winningLine = bottomList
-
                 return true
+            }
+            else{
+                bottomList.shift()
+                i--;
             }
         }
         topList = []

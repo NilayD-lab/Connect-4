@@ -87,16 +87,18 @@ container.addEventListener('mouseleave', () => {
 })
 let msCounted = 0;
 function dropChip(i) {
+    console.log(count + "bff")
     container.onmousedown = () => {
         console.log()
     }
+    console.log(columnLengths)
     board[columnLengths[i]][i] = count % 2 + 1
     pieces[count].style.setProperty('--row', '' + (columnLengths[i] + 2))
     pieces[count].style.setProperty('--topPos', returnRowShift("" + columnLengths[i]))
     pieces[count].classList.add('drop')
     editDropAnimation(columnLengths[i])
     columnLengths[i]--;
-    pieces[count].onanimationend = event =>{
+    pieces[count].onanimationend = event => {
 
         if (event.animationName == 'fall-rows-3-5' || event.animationName == 'fall-rows-1-2' || event.animationName == 'fall-row-0') {
 
@@ -104,9 +106,6 @@ function dropChip(i) {
             pieces[count].classList.remove('drop')
             pieces[count].classList.add('stop')
             count++
-
-            console.log(count + "bff")
-
             msCounted = 0
             if (decideGameState() == -1) {
                 reachDelay = setInterval(reachMouse, 1)
@@ -128,7 +127,9 @@ function dropChip(i) {
 function showWinningPieces(name) {
     decideGameState()
     let entry = BackEnd.getWinningLine()
+    console.log(entry)
     for (let i = 0; i < entry.length; i++) {
+
         findPiece(entry[i].row, entry[i].col).classList.add(name)
     }
 }
@@ -210,8 +211,12 @@ container.addEventListener('mouseover', () => {
     pieces[count].style.display = 'block'
     enteredBoard = true
 })
-
+undoButton.onmouseenter = () => {
+    //count--
+    console.log(count)
+}
 undoButton.onmousedown = () => {
+    console.log(count)
     undoButton.classList.add('down')
     undoButton.style.boxShadow = '0px 0px 0px .9vw black'
     if (window.innerWidth < 1000) {
@@ -220,31 +225,47 @@ undoButton.onmousedown = () => {
     undoButton.onmouseup = () => {
         undoButton.style.boxShadow = '0px 0px 0px 0px black'
         undoButton.style.opacity = '1'
-        if (count!=0){
+        if (count > 0) {
             count--
             pieces[count].classList.add('disappear')
-        }
-        console.log(count)
-        pieces[count].addEventListener('transitionend', () => {
-            pieces[count].style = "--topPos: -0.08vw; --endCol: 4; --row: 7; --startCol: 4; --dropCol: 4; --innerColor:" + getColor(count, false) + "; --borderColor: " + getColor(count, true)
-            pieces[count].className = 'circle follow'
-            pieces[count].remove()
+            hide(count)
+            for (let i = 0; i <= count; i++) {
+                pieces[i].classList.remove('red-won')
+                pieces[i].classList.remove('yellow-won')
 
-        })
+            }
+            gameEnd = -1
+
+        }
+
+
         undoButton.addEventListener('animationend', () => {
             undoButton.classList.remove('down')
 
         })
     }
 }
-function getColor(num, isBorder){
-    if (isBorder){
-        if (num%2==0){
+function hide(count) {
+    pieces[count].ontransitionend = () => {
+        console.log(board)
+        board[parseInt(getComputedStyle(pieces[count]).gridRow) - 2][parseInt(getComputedStyle(pieces[count]).gridColumn) - 1] = 0;
+        columnLengths[parseInt(getComputedStyle(pieces[count]).gridColumn) - 1]++
+        pieces[count].style = "--topPos: -0.08vw; --endCol: 4; --row: 7; --startCol: 4; --dropCol: 4; --innerColor:" + getColor(count, false) + "; --borderColor: " + getColor(count, true)
+        pieces[count].className = 'circle follow'
+        pieces[count].remove()
+        pieces[count].removeEventListener('transitionend', hide)
+        gameEnd = -1
+    }
+
+}
+function getColor(num, isBorder) {
+    if (isBorder) {
+        if (num % 2 == 0) {
             return '#c90a0a'
         }
         return '#DBC900'
     }
-    if (num%2==0){
+    if (num % 2 == 0) {
         return 'red'
     }
     return 'yellow'
@@ -253,6 +274,7 @@ undoButton.addEventListener('mouseleave', () => {
     undoButton.style.boxShadow = '0px 0px 0px 0px black'
     undoButton.style.opacity = '1'
     undoButton.classList.remove('down')
+    //count++
 })
 
 clearButton.querySelector('p').addEventListener('transitionend', () => {
@@ -260,19 +282,22 @@ clearButton.querySelector('p').addEventListener('transitionend', () => {
         clearButton.classList.remove('rotate-back')
         clearButton.classList.add('rotate')
         clearButton.onmouseup = () => {
+            console.log()
             clearButton.classList.remove('rotate')
             clearButton.classList.add('rotate-back')
-            while (count!=0){
-                count--
-                pieces[count].classList.add('disappear')
-                pieces[count].addEventListener('transitionend', () => {
-                    pieces[count].style = "--topPos: -0.08vw; --endCol: 4; --row: 7; --startCol: 4; --dropCol: 4; --innerColor:" + getColor(count, false) + "; --borderColor: " + getColor(count, true)
-                    pieces[count].className = 'circle follow'
-                    pieces[count].remove()
-        
-                })
+
+            if (getComputedStyle(clearButton).transform.substring(7, 8) >= ".94") {
+                while (count != 0) {
+                    count--
+                    pieces[count].classList.add('disappear')
+                    remove(count)
+                }
+                board = BackEnd.makeBoard()
+                columnLengths = [5, 5, 5, 5, 5, 5]
+                gameEnd = -1
             }
-            
+
+
         }
 
     }
@@ -283,7 +308,14 @@ clearButton.querySelector('p').addEventListener('transitionend', () => {
     })
 })
 
+function remove(count) {
+    pieces[count].addEventListener('transitionend', () => {
+        pieces[count].style = "--topPos: -0.08vw; --endCol: 4; --row: 7; --startCol: 4; --dropCol: 4; --innerColor:" + getColor(count, false) + "; --borderColor: " + getColor(count, true)
+        pieces[count].className = 'circle follow'
+        pieces[count].remove()
 
+    })
+}
 
 
 
