@@ -298,7 +298,7 @@ clearButton.querySelector('p').addEventListener('transitionend', () => {
                     remove(count)
                 }
                 board = BackEnd.makeBoard()
-                columnLengths = [5, 5, 5, 5, 5, 5]
+                columnLengths = [5, 5, 5, 5, 5, 5, 5]
                 gameEnd = -1
             }
 
