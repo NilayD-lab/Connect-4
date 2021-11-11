@@ -248,12 +248,13 @@ undoButton.onmousedown = () => {
 function hide(count) {
     pieces[count].ontransitionend = () => {
         console.log(board)
+        console.log(pieces[count])
         board[parseInt(getComputedStyle(pieces[count]).gridRow) - 2][parseInt(getComputedStyle(pieces[count]).gridColumn) - 1] = 0;
         columnLengths[parseInt(getComputedStyle(pieces[count]).gridColumn) - 1]++
         pieces[count].style = "--topPos: -0.08vw; --endCol: 4; --row: 7; --startCol: 4; --dropCol: 4; --innerColor:" + getColor(count, false) + "; --borderColor: " + getColor(count, true)
         pieces[count].className = 'circle follow'
         pieces[count].remove()
-        pieces[count].removeEventListener('transitionend', hide)
+        pieces[count].ontransitionend = ()=>{console.log()}
         gameEnd = -1
     }
 
@@ -314,12 +315,13 @@ clearButton.querySelector('p').addEventListener('transitionend', () => {
 })
 
 function remove(count) {
-    pieces[count].addEventListener('transitionend', () => {
+    pieces[count].ontransitionend = () => {
         pieces[count].style = "--topPos: -0.08vw; --endCol: 4; --row: 7; --startCol: 4; --dropCol: 4; --innerColor:" + getColor(count, false) + "; --borderColor: " + getColor(count, true)
         pieces[count].className = 'circle follow'
+        pieces[count].ontransitionend = ()=>{console.log()}
         pieces[count].remove()
 
-    })
+    }
 }
 
 

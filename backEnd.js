@@ -37,17 +37,11 @@ function backSlashSearch(num, board) {
             topList.push({row: r+c, col: c})
             bottomList.push({row: c, col: r+c+1})
         }
-        for (let i = 0; i < topList.length - 3; i++) {
-            if (getSpot(topList[i], board) == num && getSpot(topList[i + 1], board) == num && getSpot(topList[i + 2], board) == num && getSpot(topList[i + 3], board) == num) {
-                winningLine = topList
-                return true
-            }
+        if (searchForWinningLine(topList, num, board)){
+            return true
         }
-        for (let i = 0; i < bottomList.length - 3; i++) {
-            if (getSpot(bottomList[i], board) == num && getSpot(bottomList[i + 1], board) == num &&getSpot( bottomList[i + 2], board) == num && getSpot(bottomList[i + 3], board) == num) {
-                winningLine = bottomList
-                return true
-            }
+        if (searchForWinningLine(bottomList, num, board)){
+            return true
         }
         topList = []
         bottomList = []
@@ -64,36 +58,32 @@ function fowardSlashSearch(num, board) {
             bottomList.push({row: board.length - 1 - r + c, col: board[0].length - 1 - c})
 
         }
-        for (let i = 0; i < topList.length - 3; i++) {
-            if (getSpot(topList[i], board) == num && getSpot(topList[i + 1], board) == num && getSpot(topList[i + 2], board) == num && getSpot(topList[i + 3], board) == num) {
-                for (let z=topList.length-1;z>i+3;z++){
-                    topList.pop()
-                }
-                winningLine = topList
-                return true
-            }
-            else{
-                topList.shift()
-                i--;
-            }
+        if (searchForWinningLine(topList, num, board)){
+            return true
         }
-        for (let i = 0; i < bottomList.length - 3; i++) {
-            if (getSpot(bottomList[i], board) == num && getSpot(bottomList[i + 1], board) == num && getSpot(bottomList[i + 2], board) == num && getSpot(bottomList[i + 3], board) == num) {
-                for (let z=bottomList.length-1;z>i+3;z++){
-                    bottomList.pop()
-                }
-                winningLine = bottomList
-                return true
-            }
-            else{
-                bottomList.shift()
-                i--;
-            }
+        if (searchForWinningLine(bottomList, num, board)){
+            return true
         }
         topList = []
         bottomList = []
     }
     return false;
+}
+function searchForWinningLine(list, num, board){
+    for (let i = 0; i < list.length - 3; i++) {
+        if (getSpot(list[i], board) == num && getSpot(list[i + 1], board) == num && getSpot(list[i + 2], board) == num && getSpot(list[i + 3], board) == num) {
+            for (let z=list.length-1;z>i+3;z++){
+                list.pop()
+            }
+            winningLine = list
+            return true
+        }
+        else{
+            list.shift()
+            i--;
+        }
+    }
+    return false
 }
 function getSpot(object, board){
     return board[object.row][object.col]
