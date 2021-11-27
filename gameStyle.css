@@ -9,15 +9,22 @@
   --firstBounce: 36vw;
   --secondBounce: 37vw;
   --delay: 0ms;
+  font-family: "Varela Round", sans-serif;
+
+}
+html{
+  /* box-shadow: inset 0px 0px 3vw blue; */
+  height: 100%;
+
 }
 body {
-  font-family: "Varela Round", sans-serif;
   display: grid;
   grid-column: 25vw 50vw auto;
   grid-gap: 0px;
   grid-row: auto;
   align-items: center;
   background-color: #eee9e3;
+  
 }
 #buttons-container{
   display: flex;
@@ -30,6 +37,7 @@ body {
   align-self: top;
   justify-content: space-between;
   align-items: center;
+  
 }
 .btn{
   position: relative;
@@ -120,7 +128,7 @@ body {
   display: grid;
   grid-template-columns: repeat(7, calc(55vw / 7));
   grid-template-rows: repeat(7, calc(40vw / 6));
-  background-color: inherit;
+  background-color: transparent;
 
   justify-content: space-evenly;
   justify-items: center;
@@ -220,6 +228,43 @@ img {
   border-color: #ca2b2b;
   transition: box-shadow 400ms;
 }
+
+/* SinglePlayer exclusive*/
+#level-button{
+  --box-shadow-color: #6EE2CE;
+  width: 35%;
+  height: 15%;
+  font-size: 1.1vw;
+  border: 2px solid grey;
+  border-radius: 100px;
+  background-color: white;
+  font-family: "Varela Round", sans-serif; 
+  position: relative;
+  box-shadow: 0 0 1vw var(--box-shadow-color);
+  transition: box-shadow 600ms;
+
+}
+
+#level-button::after{
+  content: "Level Select";
+  position: absolute;
+  top: 8.5%;
+  left: 14%;
+  width: 70%;
+  background-color: transparent; 
+  padding-top: 15%;
+  padding-bottom: 15%;
+  transition: opacity 200ms ease-in
+
+}
+#level-button:hover::after{
+  opacity: 0;
+}
+#level-button:hover{
+  box-shadow: 0 0 0px var(--box-shadow-color);
+
+}
+
 
 @keyframes shrink {
   0%{
@@ -374,26 +419,6 @@ img {
     display: none;
   
   }
-  @keyframes fall {
-    0%{
-      
-      transform: translateY(0vw);
-    }
-    50%{
-        transform: translateY(63.818vw);
-    }
-    60%{
-        transform: translateY(58.9vw);
-    }
-    70%{
-        transform: translateY(63.818vw);
-    }
-    80%{
-        transform: translateY(60.545vw);
-    }
-    100%{
-        transform: translateY(63.818vw);
-    }
-  }
+
   
 }

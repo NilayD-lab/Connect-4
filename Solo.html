@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Connect 4</title>
+    <link rel="stylesheet" href="gameStyle.css" />
+  </head>
+  <body>
+    <div id="container">
+      <img src="board.png (2).png" alt="Connect-4 Board" />
+      <div id="one" class="col"></div>
+      <div id="two" class="col"></div>
+      <div id="three" class="col"></div>
+      <div id="four" class="col"></div>
+      <div id="five" class="col"></div>
+      <div id="six" class="col"></div>
+      <div id="seven" class="col"></div>
+    </div>
+    <div id="buttons-container" style = "height: 75%;">
+      <button id = "level-button"></button>
+
+      <div id="undo" class="btn"><p>Undo</p></div>
+      <div id="clear" class="btn">
+        <p>Clear</p>
+        <div id="arr"></div>
+      </div>
+    </div>
+  </body>
+  <script src="SinglePlayer.js" type="module"></script>
+</html>
