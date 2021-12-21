@@ -1,13 +1,8 @@
 import * as BackEnd from './backEnd.js'
-import { changeCount, enteredBoard } from './DuoPlayer.js';
-
-export let reachDelay;
 export let board = BackEnd.makeBoard()
-let pieces
-let container
-export function initalize(p, r, c) {
-    container = c
 
+let pieces
+export function initalize(p) {
     pieces = p
     let turn = 0;
     let innerColor = "red"
@@ -30,84 +25,8 @@ export function initalize(p, r, c) {
     
 }
 
-let msCounted = 0;
-export function dropChip(i, count, columnLengths) {
 
-    container.onmousedown = () => {
-        console.log()
-    }
-    board[columnLengths[i]][i] = count % 2 + 1
-    pieces[count].style.setProperty('--row', '' + (columnLengths[i] + 2))
-    pieces[count].style.setProperty('--topPos', returnRowShift("" + columnLengths[i]))
-    pieces[count].classList.add('drop')
-    editDropAnimation(columnLengths[i], count)
-    columnLengths[i]--;
-    pieces[count].onanimationend = event => {
-
-        if (event.animationName == 'fall-rows-3-5' || event.animationName == 'fall-rows-1-2' || event.animationName == 'fall-row-0') {
-
-            pieces[count].classList.remove('follow')
-            pieces[count].classList.remove('drop')
-            pieces[count].classList.add('stop')
-            count++
-            changeCount(count)
-            
-            msCounted = 0
-            if (decideGameState() == -1) {
-                reachDelay = setInterval(reachMouse, 1)
-
-            }
-            if (decideGameState() == 1) {
-                showWinningPieces('red-won', count)
-            }
-            if (decideGameState() == 2) {
-                showWinningPieces('yellow-won', count)
-            }
-
-        }
-
-    }
-    function reachMouse() {
-        if (!enteredBoard) {
-
-            clearInterval(reachDelay)
-        }
-        if (msCounted > 100) {
-            
-            clearInterval(reachDelay)
-            container.appendChild(pieces[count])
-    
-            pieces[count].onanimationend = event => {
-                if (event.animationName == 'shift') {
-                    container.onmousedown = event => {
-                        pieces[count].style.setProperty('--dropCol', parseInt(event.target.style.gridColumn) + '')
-                        dropChip(parseInt(event.target.style.gridColumn) - 1, count, columnLengths)
-                    }
-                }
-    
-            }
-    
-    
-        }
-    
-        if (contains(container.querySelectorAll('div'), document.querySelectorAll(':hover')[3])) {
-            let col = parseInt(getComputedStyle(document.querySelectorAll(':hover')[3]).gridColumn)
-            pieces[count].style.setProperty('--endCol', returnColVal("" + (col)) + 'vw')
-            pieces[count].addEventListener('animationstart', () => {
-                pieces[count].style.setProperty('--startCol', returnColVal("" + (col)) + 'vw')
-    
-            })
-    
-            msCounted++;
-            
-        }
-    
-    
-    }
-
-
-}
-export function decideGameState() {
+export function decideGameState(board) {
     if (BackEnd.calculateWin(1, board)) {
         return 1
     }
@@ -141,8 +60,8 @@ export function returnColVal(col) {
 export function resetBoard(){
     board = BackEnd.makeBoard()
 }
-function showWinningPieces(name, count) {
-    decideGameState()
+export function showWinningPieces(name, count) {
+    //decideGameState()
     let entry = BackEnd.getWinningLine()
     console.log(entry)
     for (let i = 0; i < entry.length; i++) {
@@ -160,7 +79,7 @@ function findPiece(row, col, count) {
     }
 }
 
-function contains(list, elem) {
+export function contains(list, elem) {
     for (let i = 0; i < list.length; i++) {
         if (list[i] == elem) {
             return true
@@ -169,7 +88,7 @@ function contains(list, elem) {
     return false
 }
 
-function editDropAnimation(row, count) {
+export function editDropAnimation(row, count) {
     let multiplier = 1;
     if (window.innerWidth < 1000) {
         multiplier = 90 / 55
@@ -203,7 +122,7 @@ function rowDepth(row) {
 }
 
 
-function returnRowShift(row) {
+export function returnRowShift(row) {
     let rowShifts = ['.5vw', '.2vw', '0vw', '-.1vw', '-.4vw', '-.8vw']
 
     return rowShifts[row]

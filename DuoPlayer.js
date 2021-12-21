@@ -1,57 +1,150 @@
 import * as BackEnd from './backEnd.js'
-import { initalize, dropChip, decideGameState, returnColVal, resetBoard, board, reachDelay } from './Utilities.js'
+import { initalize, decideGameState, returnColVal, resetBoard, board, returnRowShift, contains, editDropAnimation, showWinningPieces } from './Utilities.js'
 let undoButton = document.getElementById('undo')
-export let enteredBoard = false
+let enteredBoard = false
 let container = document.getElementById('container')
 let count = 0;
 let cols = document.querySelectorAll('.col')
 let pieces = []
 let delay;
-//let reachDelay;
+let reachDelay;
 let clearButton = document.getElementById('clear')
+let smallWindow = window.innerWidth < 1000
+let columnLengths = [5, 5, 5, 5, 5, 5, 5]
+initalize(pieces)
+window.onresize = () => {
+    smallWindow = smallWindow < 1000
+}
 
-let columnLengths = [5, 5, 5, 5 ,5, 5, 5]
-initalize(pieces, reachDelay, container)
 for (let i = 0; i < cols.length; i++) {
     cols[i].style.gridColumn = i + 1;
-    cols[i].addEventListener('mouseover', event => {
-        if (decideGameState() == -1) {
-            clearInterval(reachDelay)
-            clearTimeout(delay)
-            delay = setTimeout(() => {
-                cols[i].addEventListener('mouseleave', () => {
-                    clearTimeout(delay)
-                })
-                if (enteredBoard && !pieces[count].classList.contains('drop')) {
-                    container.appendChild(pieces[count])
-                    pieces[count].style.setProperty('--endCol', returnColVal("" + (parseInt(event.target.style.gridColumn))) + 'vw')
-                    pieces[count].addEventListener('animationstart', () => {
-                        pieces[count].style.setProperty('--startCol', returnColVal("" + (parseInt(event.target.style.gridColumn))) + 'vw')
-
+    if (!smallWindow) {
+        cols[i].addEventListener('mouseover', event => {
+            if (decideGameState(board) == -1) {
+                clearInterval(reachDelay)
+                clearTimeout(delay)
+                delay = setTimeout(() => {
+                    cols[i].addEventListener('mouseleave', () => {
+                        clearTimeout(delay)
                     })
-                    pieces[count].onanimationend = event => {
-                        if (event.animationName == 'shift') {
-                            container.onmousedown = event => {
-                                if (columnLengths[parseInt(event.target.style.gridColumn) - 1] >= 0 && decideGameState() == -1) {
-                                    pieces[count].style.setProperty('--dropCol', parseInt(event.target.style.gridColumn) + '')
-                                    dropChip(parseInt(event.target.style.gridColumn) - 1, count, columnLengths)
-                                    console.log("sdfjksd")
-                                }
+                    if (enteredBoard && !pieces[count].classList.contains('drop')) {
+                        container.appendChild(pieces[count])
+                        pieces[count].style.setProperty('--endCol', returnColVal("" + (parseInt(event.target.style.gridColumn))) + 'vw')
+                        pieces[count].addEventListener('animationstart', () => {
+                            pieces[count].style.setProperty('--startCol', returnColVal("" + (parseInt(event.target.style.gridColumn))) + 'vw')
 
+                        })
+                        pieces[count].onanimationend = event => {
+                            if (event.animationName == 'shift') {
+                                container.onmousedown = event => {
+                                    if (columnLengths[parseInt(event.target.style.gridColumn) - 1] >= 0 && decideGameState(board) == -1) {
+                                        pieces[count].style.setProperty('--dropCol', parseInt(event.target.style.gridColumn) + '')
+                                        dropChip(parseInt(event.target.style.gridColumn) - 1)
+                                    }
+
+                                }
                             }
                         }
                     }
+
+                }, 200)
+            }
+        })
+    }
+    else {
+        cols[i].onmouseup = () => {
+            if (decideGameState(board) == -1 && enteredBoard && !pieces[count].classList.contains('drop')) {
+                console.log(i)
+                container.appendChild(pieces[count])
+
+                pieces[count].style.setProperty('--endCol', returnColVal("" + (parseInt(cols[i].style.gridColumn))) + 'vw')
+                pieces[count].addEventListener('animationstart', () => {
+                    pieces[count].style.setProperty('--startCol', returnColVal("" + (parseInt(cols[i].style.gridColumn))) + 'vw')
+
+                })
+                if (columnLengths[parseInt(cols[i].style.gridColumn) - 1] >= 0 && decideGameState(board) == -1) {
+                    pieces[count].style.setProperty('--dropCol', parseInt(cols[i].style.gridColumn) + '')
+                    dropChip(parseInt(cols[i].style.gridColumn) - 1)
                 }
+            }
 
-            }, 200)
         }
-    })
+    }
+
+}
+let msCounted = 0;
+function dropChip(i) {
+    container.onmousedown = () => {
+        console.log()
+    }
+    board[columnLengths[i]][i] = count % 2 + 1
+    pieces[count].style.setProperty('--row', '' + (columnLengths[i] + 2))
+    pieces[count].style.setProperty('--topPos', returnRowShift("" + columnLengths[i]))
+    pieces[count].classList.add('drop')
+    editDropAnimation(columnLengths[i], count)
+    columnLengths[i]--;
+    pieces[count].onanimationend = event => {
+        if (event.animationName == 'fall-rows-3-5' || event.animationName == 'fall-rows-1-2' || event.animationName == 'fall-row-0') {
+
+            pieces[count].classList.remove('follow')
+            pieces[count].classList.remove('drop')
+            pieces[count].classList.add('stop')
+            count++
+            msCounted = 0
+            if (decideGameState(board) == -1 && !smallWindow) {
+                reachDelay = setInterval(reachMouse, 1)
+
+            }
+            if (decideGameState(board) == 1) {
+                showWinningPieces('red-won', count)
+            }
+            if (decideGameState(board) == 2) {
+                showWinningPieces('yellow-won', count)
+            }
+
+        }
+
+    }
+
+}
+function reachMouse() {
+    if (!enteredBoard) {
+        clearInterval(reachDelay)
+    }
+    if (msCounted > 100) {
+
+        clearInterval(reachDelay)
+        container.appendChild(pieces[count])
+
+        pieces[count].onanimationend = event => {
+            if (event.animationName == 'shift') {
+                container.onmousedown = event => {
+                    pieces[count].style.setProperty('--dropCol', parseInt(event.target.style.gridColumn) + '')
+                    dropChip(parseInt(event.target.style.gridColumn) - 1, count, columnLengths)
+                }
+            }
+
+        }
+
+
+    }
+
+    if (contains(container.querySelectorAll('div'), document.querySelectorAll(':hover')[3])) {
+        let col = parseInt(getComputedStyle(document.querySelectorAll(':hover')[3]).gridColumn)
+        pieces[count].style.setProperty('--endCol', returnColVal("" + (col)) + 'vw')
+        pieces[count].addEventListener('animationstart', () => {
+            pieces[count].style.setProperty('--startCol', returnColVal("" + (col)) + 'vw')
+
+        })
+
+        msCounted++;
+
+    }
+
 
 }
 
-export function changeCount(val) {
-    count = val
-}
+
 
 container.addEventListener('mouseleave', () => {
     clearInterval(reachDelay)
@@ -69,7 +162,12 @@ container.addEventListener('mouseover', () => {
 
 
 
-
+undoButton.addEventListener('mouseleave', () => {
+    undoButton.style.boxShadow = '0px 0px 0px 0px black'
+    undoButton.style.opacity = '1'
+    undoButton.classList.remove('down')
+    //count++
+})
 
 undoButton.onmousedown = () => {
     undoButton.classList.add('down')
@@ -123,13 +221,8 @@ function getColor(num, isBorder) {
     }
     return 'yellow'
 }
-undoButton.addEventListener('mouseleave', () => {
-    undoButton.style.boxShadow = '0px 0px 0px 0px black'
-    undoButton.style.opacity = '1'
-    undoButton.classList.remove('down')
-    //count++
-})
-clearButton.querySelector('p').ontransitionend =  () => {
+
+clearButton.querySelector('p').ontransitionend = () => {
     clearButton.onmousedown = () => {
         clearButton.classList.remove('rotate-back')
         clearButton.classList.add('rotate')
@@ -147,7 +240,6 @@ clearButton.querySelector('p').ontransitionend =  () => {
                 }
                 while (count != 0) {
                     count--
-
                     pieces[count].classList.add('disappear')
                     remove(count)
                 }
@@ -164,6 +256,22 @@ clearButton.querySelector('p').ontransitionend =  () => {
         clearButton.classList.add('rotate-back')
 
     })
+}
+if (smallWindow){
+    clearButton.onmousedown = ()=>{
+        for (let i = 0; i <= count; i++) {
+            pieces[i].classList.remove('red-won')
+            pieces[i].classList.remove('yellow-won')
+
+        }
+        while (count != 0) {
+            count--
+            pieces[count].classList.add('disappear')
+            remove(count)
+        }
+        resetBoard()
+        columnLengths.fill(5)
+    }
 }
 function remove(count) {
     pieces[count].ontransitionend = () => {
