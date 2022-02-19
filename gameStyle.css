@@ -1,5 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Varela+Round&display=swap");
-:root{
+:root {
   -moz-user-select: none;
   -khtml-user-select: none;
   -webkit-user-select: none;
@@ -10,12 +10,10 @@
   --secondBounce: 37vw;
   --delay: 0ms;
   font-family: "Varela Round", sans-serif;
-
 }
-html{
+html {
   /* box-shadow: inset 0px 0px 3vw blue; */
   height: 100%;
-
 }
 body {
   display: grid;
@@ -24,9 +22,8 @@ body {
   grid-row: auto;
   align-items: center;
   background-color: #eee9e3;
-  
 }
-#buttons-container{
+#buttons-container {
   display: flex;
   flex-direction: column;
   background-color: none;
@@ -37,30 +34,29 @@ body {
   align-self: top;
   justify-content: space-between;
   align-items: center;
-  
 }
-.btn{
+.btn {
   position: relative;
   background-color: #669ffa;
   -webkit-text-fill-color: #eee9e3;
   width: 10vw;
   height: 10vw;
   border-radius: 100%;
-  font-size: .9vw;
+  font-size: 0.9vw;
   text-align: center;
   border: solid black;
   outline: solid black;
   -moz-outline-radius: 100%;
-  outline-offset: .9vw;
+  outline-offset: 0.9vw;
   box-shadow: 0px 0px 0px 0px black;
-  
 }
 
-#undo:hover p{
+#undo:hover p {
   opacity: 1;
 }
 
-#undo::before, #undo::after{
+#undo::before,
+#undo::after {
   content: "❮";
   font-size: 5vw;
   font-weight: bolder;
@@ -70,53 +66,50 @@ body {
   top: 15%;
   transition: transform 500ms;
 }
-#undo:hover::before{
+#undo:hover::before {
   transform: translateX(-65%);
 }
-#undo:hover::after{
+#undo:hover::after {
   transform: translateX(90%);
 }
 
-#undo p{
+#undo p {
   margin-top: 45%;
   margin-right: 5%;
   opacity: 0;
   transition: opacity 500ms;
-  
 }
 
-#clear{
+#clear {
   position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
   transform-origin: center center;
-
 }
-#clear p{
+#clear p {
   display: inline;
   opacity: 0;
   margin: 0;
   transition: opacity 1000ms 100ms;
-
 }
-#clear:hover p{
+#clear:hover p {
   opacity: 1;
 }
-#arr{
+#arr {
   position: absolute;
   top: 28%;
   left: 37%;
   height: 0;
   width: 0;
-  border-left: calc(45vw/19.2) solid #eee9e3;
-  border-top: calc(45vw/19.2) solid transparent;
-  border-bottom: calc(45vw/19.2) solid transparent;
+  border-left: calc(45vw / 19.2) solid #eee9e3;
+  border-top: calc(45vw / 19.2) solid transparent;
+  border-bottom: calc(45vw / 19.2) solid transparent;
   -ms-transform: rotate(180deg);
   transform: rotate(180deg);
   transition: top 400ms linear, border-left-color 500ms;
 }
-#clear:hover #arr{
+#clear:hover #arr {
   top: -28%;
   border-left-color: black;
 }
@@ -169,7 +162,7 @@ img {
   border-radius: 200px;
   z-index: 0;
   grid-column: 1;
-  border: var(--borderColor) solid .156vw;
+  border: var(--borderColor) solid 0.156vw;
 }
 .follow {
   grid-row: 1;
@@ -184,196 +177,177 @@ img {
 .drop {
   grid-column: var(--dropCol);
   animation-name: fall-rows-3-5;
-  animation-duration:700ms;
+  animation-duration: 700ms;
   animation-timing-function: ease-in;
-  
 }
-.stop{
-    position: relative;
-    top: var(--topPos);
-    grid-row: var(--row);
-    grid-column: var(--dropCol);
-    z-index: 0;
+.stop {
+  position: relative;
+  top: var(--topPos);
+  grid-row: var(--row);
+  grid-column: var(--dropCol);
+  z-index: 0;
 }
-.down{
-  box-shadow: 0px 0px 0px .9vw black;
+.down {
+  box-shadow: 0px 0px 0px 0.9vw black;
   transition: box-shadow 150ms;
 }
-.rotate{
+.rotate {
   transform: rotate(-360deg);
-  box-shadow: 0px 0px 0px .9vw black;
+  box-shadow: 0px 0px 0px 0.9vw black;
   transition: transform 2000ms ease-out, box-shadow 2000ms ease-out;
-
 }
-.rotate-back{
+.rotate-back {
   transform: rotate(0deg);
   box-shadow: 0px 0px 0px 0px black;
-  transition:  transform 500ms ease, box-shadow 500ms ease;
+  transition: transform 500ms ease, box-shadow 500ms ease;
 }
 
-.disappear{
+.disappear {
   transform: scale(0);
   transition: transform 200ms ease-in-out;
-
- 
-
 }
-.red-won{
-  box-shadow: inset 0px 0px 30px 3px #FFD900;
-  border-color: #FFD900;
+.red-won {
+  box-shadow: inset 0px 0px 30px 3px #ffd900;
+  border-color: #ffd900;
   transition: box-shadow 400ms;
 }
-.yellow-won{
+.yellow-won {
   box-shadow: inset 0px 0px 30px 4px #ca2b2b;
   border-color: #ca2b2b;
   transition: box-shadow 400ms;
 }
 
 /* SinglePlayer exclusive*/
-#level-button{
-  --box-shadow-color: #6EE2CE;
+#level-button {
+  --box-shadow-color: #6ee2ce;
   width: 35%;
   height: 15%;
   font-size: 1.1vw;
   border: 2px solid grey;
   border-radius: 100px;
   background-color: white;
-  font-family: "Varela Round", sans-serif; 
+  font-family: "Varela Round", sans-serif;
   position: relative;
   box-shadow: 0 0 1vw var(--box-shadow-color);
   transition: box-shadow 600ms;
-
 }
 
-#level-button::after{
+#level-button::after {
   content: "Level Select";
   position: absolute;
   top: 8.5%;
   left: 14%;
   width: 70%;
-  background-color: transparent; 
+  background-color: transparent;
   padding-top: 15%;
   padding-bottom: 15%;
-  transition: opacity 200ms ease-in
-
+  transition: opacity 200ms ease-in;
 }
-#level-button:hover::after{
+#level-button:hover::after {
   opacity: 0;
 }
-#level-button:hover{
+#level-button:hover {
   box-shadow: 0 0 0px var(--box-shadow-color);
-
 }
 
-
 @keyframes shrink {
-  0%{
+  0% {
     transform: scale(1);
   }
-  100%{
+  100% {
     transform: scale(0);
   }
 }
 @keyframes fall-rows-3-5 {
-  0%{
+  0% {
     transform: translateY(0vw);
   }
-  50%{
-      transform: translateY(var(--dropDepth));
-  }
-  60%{
-    transform: translateY(var(--firstBounce));
-  }
-  70%{
+  50% {
     transform: translateY(var(--dropDepth));
   }
-  80%{
-      transform: translateY(var(--secondBounce));
+  60% {
+    transform: translateY(var(--firstBounce));
   }
-  100%{
-      transform: translateY(var(--dropDepth));
+  70% {
+    transform: translateY(var(--dropDepth));
   }
-
+  80% {
+    transform: translateY(var(--secondBounce));
+  }
+  100% {
+    transform: translateY(var(--dropDepth));
+  }
 }
 
 @keyframes fall-rows-1-2 {
-  0%{
+  0% {
     transform: translateY(0vw);
   }
- 70%{
+  70% {
     transform: translateY(var(--dropDepth));
-
   }
-  80%{
+  80% {
     transform: translateY(var(--firstBounce));
-
   }
-  100%{
+  100% {
     transform: translateY(var(--dropDepth));
-
   }
 }
 
 @keyframes fall-row-0 {
-  0%{
+  0% {
     transform: translateY(0vw);
-    
   }
-  100%{
+  100% {
     transform: translateY(var(--dropDepth));
-
   }
 }
 
-
-@-webkit-keyframes shift{
-  0%{
+@-webkit-keyframes shift {
+  0% {
     -webkit-transform: translateX(var(--startCol));
-
   }
-  100%{
+  100% {
     -webkit-transform: translateX(var(--endCol));
-
   }
 }
-@-moz-keyframes shift{
-  0%{
+@-moz-keyframes shift {
+  0% {
     -moz-transform: translateX(var(--startCol));
   }
-  100%{
+  100% {
     -moz-transform: translateX(var(--endCol));
   }
 }
 @keyframes shift {
-  0%{
+  0% {
     transform: translateX(var(--startCol));
   }
-  100%{
-    transform: translateX(var(--endCol))
+  100% {
+    transform: translateX(var(--endCol));
   }
 }
 
-
 @media screen and (max-width: 1000px) {
-  body{
+  body {
     grid-template-columns: auto;
     grid-template-rows: 76.36vw 10vh;
     grid-gap: 10vh;
 
     justify-content: center;
   }
-  #buttons-container{
+  #buttons-container {
     grid-column: 0;
     grid-row: 2;
     height: 10vh;
     flex-direction: row;
     justify-content: space-evenly;
   }
-  img{
+  img {
     width: 90vw;
     height: auto;
   }
-  #container{
+  #container {
     grid-column: 1;
     grid-row: 1;
     width: 90vw;
@@ -381,44 +355,39 @@ img {
     grid-template-columns: repeat(7, calc(90vw / 7));
     grid-template-rows: repeat(7, calc(65.45vw / 6));
   }
-  .circle{
+  .circle {
     width: 8.9vw;
     height: 8.9vw;
   }
-  .stop{
+  .stop {
     animation: none;
     z-index: 0;
   }
 
-  .btn{
-
+  .btn {
     width: 20vw;
     height: 20vw;
     font-size: 3.6vw;
     outline: none;
     border: black solid 1.8vw;
-  
   }
-  #clear p{
+  #clear p {
     opacity: 1;
   }
-  #arr{
+  #arr {
     display: none;
   }
-  #undo{
+  #undo {
     display: flex;
     justify-content: center;
     align-items: center;
   }
-  #undo p{
+  #undo p {
     margin: 0;
     opacity: 1;
   }
-  #undo::before, #undo::after{
-
+  #undo::before,
+  #undo::after {
     display: none;
-  
   }
-
-  
 }

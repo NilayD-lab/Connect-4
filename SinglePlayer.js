@@ -6,7 +6,8 @@ let levelOptions = ["Easy", "Medium", "Hard"]
 let levelColors = ["#0D8C10", "#6EE2CE", "#EB4D4D"]
 let currentLevel = 1
 
-
+let numOfThreadsBack = 7
+let depth = 10
 let undoButton = document.getElementById('undo')
 let enteredBoard = false
 let container = document.getElementById('container')
@@ -21,12 +22,21 @@ let columnLengths = [5, 5, 5, 5, 5, 5, 5]
 initalize(pieces)
 initalizeLevelButton()
 
+if (count == 1) {
+    container.appendChild(pieces[count])
+    pieces[count].style.setProperty('--endCol', returnColVal("" + (parseInt(4))) + 'vw')
+    pieces[count].onanimationend = event => {
+        if (event.animationName == 'shift' && count % 2 == 1) {
+            pieces[count].style.setProperty('--dropCol', 4 + '')
+            dropChip(4 - 1)
 
+        }
+    }
+}
 
 for (let i = 0; i < cols.length; i++) {
     cols[i].style.gridColumn = i + 1;
     cols[i].addEventListener('mouseover', event => {
-        console.log(count)
 
         if (decideGameState(board) == -1) {
             if (count % 2 == 0) {
@@ -44,7 +54,7 @@ for (let i = 0; i < cols.length; i++) {
 
                         })
                         pieces[count].onanimationend = event => {
-                            if (event.animationName == 'shift') {
+                            if (event.animationName == 'shift' && count % 2 == 0) {
                                 container.onmousedown = event => {
                                     if (columnLengths[parseInt(event.target.style.gridColumn) - 1] >= 0 && decideGameState(board) == -1) {
                                         pieces[count].style.setProperty('--dropCol', parseInt(event.target.style.gridColumn) + '')
@@ -58,43 +68,50 @@ for (let i = 0; i < cols.length; i++) {
 
                 }, 200)
             }
-            else {
-                let bestMove = -10
-                let bestScore = Number.MAX_SAFE_INTEGER
-                let possibleMoves = [-1, -1, -1, -1, -1, -1, -1]
-                for (let i=0;i<columnLengths.length;i++){
-                    if (columnLengths[i]>=0){
-                        board[columnLengths[i]][i] = 2;
-                        columnLengths[i]--;
-                        possibleMoves[i] = BackEnd.minimax(i,Number.MIN_SAFE_INTEGER, Number.MAX_SAFE_INTEGER, 5, true, board, columnLengths);
-                        columnLengths[i]++;
-                        board[columnLengths[i]][i] = 0;
-                        // if (possibleMoves[i]==0){
-                        //     possibleMoves[i] = -1*colValue(i);
-                        // }
-                    }
-                }
-                console.log(possibleMoves)
-                container.appendChild(pieces[count])
 
-                pieces[count].style.setProperty('--endCol', returnColVal("" + (parseInt(2))) + 'vw')
-    
-                pieces[count].onanimationend = event => {
-                    if (event.animationName == 'shift') {
-                        pieces[count].style.setProperty('--dropCol', 2 + '')
-                        dropChip(2 - 1)
-
-                    }
-                }
-
-            }
         }
-       
+
     })
 
 }
-function colValue(i){
-    let arr = []
+function selectionSort(arr) {
+    let min = { move: -1, value: Number.MAX_SAFE_INTEGER }
+    let minIndex
+    for (let i = 0; i < arr.length; i++) {
+        for (let j = i; j < arr.length; j++) {
+            if (min.value > arr[j].value) {
+                min = arr[j]
+                minIndex = j
+            }
+        }
+        arr[minIndex] = arr[i]
+        arr[i] = min
+
+        min = { move: -1, value: Number.MAX_SAFE_INTEGER }
+    }
+    
+    return arr
+}
+function orderByCenter(arr) {
+    let max = { move: -1, value: -1 }
+    let maxIndex
+    for (let i = 0; i < arr.length; i++) {
+        for (let j = i; j < arr.length; j++) {
+            if (arr[i].value == arr[j].value && colValue(arr[j].move) > colValue(max.move)) {
+                max = arr[j]
+                maxIndex = j
+            }
+        }
+        arr[maxIndex] = arr[i]
+        arr[i] = max
+        max = { move: -1, value: -1 }
+    }
+    return arr
+}
+function colValue(i) {
+    let arr = [1, 2, 3, 4, 3, 2, 1]
+    return arr[i] == undefined ? -1 : arr[i]
+
 }
 
 
@@ -102,43 +119,30 @@ function colValue(i){
 
 
 
+let amountOfFullCols = 0
+function checkAmountOfFullCols(columnLengths) {
+    let temp = 0
+    for (let i = 0; i < columnLengths.length; i++) {
+        if (columnLengths[i] === -1) {
+            temp++
+        }
+    }
+    return temp > amountOfFullCols
+}
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+let threshhold = 13
 let msCounted = 0;
 function dropChip(i) {
+    if (count % 3 == 0) {
+        depth++
+        console.log(depth)
+    }
+
+
+
+
+
     container.onmousedown = () => {
         console.log()
     }
@@ -147,7 +151,8 @@ function dropChip(i) {
     pieces[count].style.setProperty('--topPos', returnRowShift("" + columnLengths[i]))
     pieces[count].classList.add('drop')
     editDropAnimation(columnLengths[i], count)
-    columnLengths[i]--;
+    columnLengths[i]--
+    print(board)
     pieces[count].onanimationend = event => {
 
         if (event.animationName == 'fall-rows-3-5' || event.animationName == 'fall-rows-1-2' || event.animationName == 'fall-row-0') {
@@ -159,21 +164,110 @@ function dropChip(i) {
             msCounted = 0
             if (decideGameState(board) == -1 && count % 2 == 0) {
                 reachDelay = setInterval(reachMouse, 1)
-
             }
             if (decideGameState(board) == 1) {
                 showWinningPieces('red-won', count)
+                return
             }
             if (decideGameState(board) == 2) {
                 showWinningPieces('yellow-won', count)
+                return
+            }
+            if (count % 2 == 1) {
+                startThreads()
+
+
             }
         }
 
     }
 
 }
+function assignObj(arr){
+    let temp = []
+    for (let i=0;i<7;i++){
+        temp[i] = {move: i, value: arr[i]}
+    }
+    return temp
+}
+
+function playBestMove(scores) {
+    let bestMove = orderByCenter(selectionSort(scores))[0].move + 1 
+    container.appendChild(pieces[count])
+    pieces[count].style.setProperty('--endCol', returnColVal("" + (parseInt(bestMove))) + 'vw')
+    console.log(scores)
+    pieces[count].onanimationend = event => {
+        if (event.animationName == 'shift' && count % 2 == 1) {
+            pieces[count].style.setProperty('--dropCol', bestMove + '')
+            dropChip(bestMove - 1)
+
+        }
+    }
+
+}
+function print(board) {
+    let row = ""
+    for (let r = 0; r < board.length; r++) {
+        for (let c = 0; c < 7; c++) {
+            row += "" + board[r][c] + " "
+        }
+        console.log(row)
+        row = ""
+    }
+}
+function startThreads() {
+    let scores = [-1, -1, -1, -1, -1, -1, -1]
+    numOfThreadsBack = 0
+    let workers = []
+    for (let i = 0; i < 7; i++) {
+        workers[i] = new Worker('worker.js')
+        workers[i].postMessage({
+            move: i,
+            depth: depth,
+            board: board,
+            colLengths: columnLengths
+        })
+        workers[i].onmessage = (event) => {
+            scores[i] = event.data
+            numOfThreadsBack++
+            workers[i].terminate()
+        }
+
+
+    }
+    let temp = setInterval(() => {
+        if (numOfThreadsBack == 7) {
+
+            clearInterval(temp)
+            console.log(scores)
+            scores = assignObj(scores)
+            playBestMove(scores)
+
+
+        }
+    }, 1);
+
+
+}
+
+function indexOfMin(arr) {
+    // for (let i = 0; i < 7; i++) {
+    //     if (arr[i] == 0) {
+    //         arr[i] = -1 * colValue(i)
+    //     }
+    // }
+    let min = Number.MAX_SAFE_INTEGER
+    let minIndex = -1
+    for (let i = 0; i < arr.length; i++) {
+        if (arr[i] < min && arr[i] != -5) {
+            min = arr[i]
+            minIndex = i
+        }
+    }
+
+    return minIndex
+}
 function reachMouse() {
-    console.log("skfbsd")
     if (!enteredBoard) {
         clearInterval(reachDelay)
     }
@@ -187,6 +281,7 @@ function reachMouse() {
                 container.onmousedown = event => {
                     pieces[count].style.setProperty('--dropCol', parseInt(event.target.style.gridColumn) + '')
                     dropChip(parseInt(event.target.style.gridColumn) - 1, count, columnLengths)
+                    console.log('slskFJsd;lkf')
                 }
             }
 
@@ -266,7 +361,6 @@ undoButton.onmousedown = () => {
 }
 function hide(count) {
     pieces[count].ontransitionend = () => {
-        console.log(pieces[count])
         board[parseInt(getComputedStyle(pieces[count]).gridRow) - 2][parseInt(getComputedStyle(pieces[count]).gridColumn) - 1] = 0;
         columnLengths[parseInt(getComputedStyle(pieces[count]).gridColumn) - 1]++
         pieces[count].style = "--topPos: -0.08vw; --endCol: 4; --row: 7; --startCol: 4; --dropCol: 4; --innerColor:" + getColor(count, false) + "; --borderColor: " + getColor(count, true)
