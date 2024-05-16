@@ -61,23 +61,18 @@ h1 {
   -ms-user-select: none;
   user-select: none;
 }
-#computer {
-  background-color: #e44942;
-  transition: transform 0.5s;
-}
-
-#computer:hover {
-  transform: scale(0.9);
-}
-
 #link{
   text-decoration: none;
+}
+#solo {
+  background-color: #e44942;
+  transition: transform 0.5s;
 }
 #duo {
   background-color: #4268e4;
   transition: transform 0.5s;
 }
-#duo:hover {
+#duo:hover, #solo:hover {
   transform: scale(0.9);
   
 }

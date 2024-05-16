@@ -1,12 +1,12 @@
 
-let popUpContainer = document.getElementById('pop-up-container')
-let hardButton = document.getElementById('hard')
-let easyButton = document.getElementById('easy')
-let mediumButton = document.getElementById('medium')
-hardButton.remove()
-easyButton.remove()
-mediumButton.remove()
-popUpContainer.remove()
+// let popUpContainer = document.getElementById('pop-up-container')
+// let hardButton = document.getElementById('hard')
+// let easyButton = document.getElementById('easy')
+// let mediumButton = document.getElementById('medium')
+// hardButton.remove()
+// easyButton.remove()
+// mediumButton.remove()
+// popUpContainer.remove()
 let lightMode = true;
 let isRed = true;
 let topPiece = document.getElementById('player-one')
@@ -66,23 +66,7 @@ topPiece.addEventListener('click', ()=>{
     
 })
 
-computerButton.addEventListener('click', ()=>{
-    piece.style.animationPlayState = 'paused'
-    clearInterval(timer)
-    document.body.appendChild(popUpContainer)
-    popUpContainer.appendChild(hardButton)
-    popUpContainer.appendChild(mediumButton)
-    popUpContainer.appendChild(easyButton)
-    hardButton.classList.add('pop')
-    mediumButton.classList.add('pop')
-    easyButton.classList.add('pop')
-    if (lightMode){
-        popUpContainer.style.backgroundColor = 'rgba(0,0,0,.5)'
-    }
-    else{
-        popUpContainer.style.backgroundColor = 'rgba(0,0,0,.5)'
-    }
-})
+
 
 popUpContainer.addEventListener('click', event=>{
     if (event.target!=hardButton && event.target!=mediumButton && event.target!=easyButton){

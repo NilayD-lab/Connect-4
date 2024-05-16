@@ -7,7 +7,8 @@ let levelColors = ["#0D8C10", "#6EE2CE", "#EB4D4D"]
 let currentLevel = 1
 
 let numOfThreadsBack = 7
-let depth = 10
+let depth = 7
+let inc = 1
 let undoButton = document.getElementById('undo')
 let enteredBoard = false
 let container = document.getElementById('container')
@@ -48,10 +49,11 @@ for (let i = 0; i < cols.length; i++) {
                     })
                     if (enteredBoard && !pieces[count].classList.contains('drop')) {
                         container.appendChild(pieces[count])
-                        pieces[count].style.setProperty('--endCol', returnColVal("" + (parseInt(event.target.style.gridColumn))) + 'vw')
+                        pieces[count].style.setProperty('--endCol', 
+                            returnColVal("" + (parseInt(event.target.style.gridColumn))) + 'vw')
                         pieces[count].addEventListener('animationstart', () => {
-                            pieces[count].style.setProperty('--startCol', returnColVal("" + (parseInt(event.target.style.gridColumn))) + 'vw')
-
+                            pieces[count].style.setProperty('--startCol', 
+                                returnColVal("" + (parseInt(event.target.style.gridColumn))) + 'vw')
                         })
                         pieces[count].onanimationend = event => {
                             if (event.animationName == 'shift' && count % 2 == 0) {
@@ -66,7 +68,7 @@ for (let i = 0; i < cols.length; i++) {
                         }
                     }
 
-                }, 200)
+                }, 0)
             }
 
         }
@@ -135,7 +137,7 @@ let threshhold = 13
 let msCounted = 0;
 function dropChip(i) {
     if (count % 3 == 0) {
-        depth++
+        depth+=inc
         console.log(depth)
     }
 
@@ -401,6 +403,9 @@ function initalizeLevelButton() {
         if (currentLevel >= levelOptions.length) {
             currentLevel = 0
         }
+        if (currentLevel == 2){inc = 2}
+        if (currentLevel == 1){inc = 1}
+        if (currentLevel == 0){inc = 0}
         levelButton.innerHTML = levelOptions[currentLevel]
         levelButton.style.setProperty('--box-shadow-color', levelColors[currentLevel])
     }
